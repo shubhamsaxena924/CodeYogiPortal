@@ -69,7 +69,7 @@ const LoginPage: React.FC<Props> = (props) => {
           name={possibleKeys.email}
           required
           autoComplete="email"
-          valueHandler={{
+          handleChange={{
             value: loginData.email,
             setValue: setLoginData,
           }}
@@ -92,7 +92,7 @@ const LoginPage: React.FC<Props> = (props) => {
           autoComplete="current-password"
           name={possibleKeys.password}
           required
-          valueHandler={{
+          handleChange={{
             value: loginData.password,
             setValue: setLoginData,
           }}
@@ -120,7 +120,7 @@ const LoginPage: React.FC<Props> = (props) => {
           name={possibleKeys.keepMeLoggedIn}
           checked={loginData.keepMeLoggedIn}
           label="Keep me logged in"
-          valueHandler={{
+          handleChange={{
             value: loginData.keepMeLoggedIn,
             setValue: setLoginData,
           }}

@@ -6,13 +6,13 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   id: string;
   name: string;
   className?: string;
-  valueHandler?: {
+  handleChange?: {
     value: boolean;
     setValue: React.Dispatch<SetStateAction<any>>;
   };
 }
 
-const CheckBox: React.FC<Props> = ({ valueHandler, ...props }) => {
+const CheckBox: React.FC<Props> = ({ handleChange, ...props }) => {
   return (
     <div className="flex flex-row-reverse items-center justify-center">
       <label htmlFor={props.id} className="font-light text-gray-400">
@@ -29,10 +29,10 @@ const CheckBox: React.FC<Props> = ({ valueHandler, ...props }) => {
           props.className
         }
         onChange={(event) =>
-          valueHandler &&
-          valueHandler.setValue((obj: any) => ({
+          handleChange &&
+          handleChange.setValue((obj: any) => ({
             ...obj,
-            [props.name]: !valueHandler.value,
+            [props.name]: !handleChange.value,
           }))
         }
       />

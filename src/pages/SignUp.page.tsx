@@ -64,7 +64,7 @@ const SignUpPage: React.FC<Props> = (props) => {
           name={possibleKeys.username}
           required
           autoComplete="username"
-          valueHandler={{
+          handleChange={{
             value: signUpData.username,
             setValue: setSignUpData,
           }}
@@ -87,7 +87,7 @@ const SignUpPage: React.FC<Props> = (props) => {
           id="email"
           name={possibleKeys.email}
           autoComplete="email"
-          valueHandler={{
+          handleChange={{
             value: signUpData.email,
             setValue: setSignUpData,
           }}
@@ -110,7 +110,7 @@ const SignUpPage: React.FC<Props> = (props) => {
           name={possibleKeys.password}
           required
           autoComplete="new-password"
-          valueHandler={{
+          handleChange={{
             value: signUpData.password,
             setValue: setSignUpData,
           }}
@@ -140,7 +140,7 @@ const SignUpPage: React.FC<Props> = (props) => {
             }
             required
             checked={signUpData.isAgree}
-            valueHandler={{
+            handleChange={{
               value: signUpData.isAgree,
               setValue: setSignUpData,
             }}

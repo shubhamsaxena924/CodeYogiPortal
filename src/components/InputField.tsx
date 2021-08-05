@@ -9,13 +9,13 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   name: string; //These are optional in actual input element, so we are explicitly writing them here.
   type: string;
   className?: string;
-  valueHandler?: {
+  handleChange?: {
     value: string;
     setValue: React.Dispatch<SetStateAction<any>>;
   };
 }
 
-const InputField: React.FC<Props> = ({ valueHandler, ...props }) => {
+const InputField: React.FC<Props> = ({ handleChange, ...props }) => {
   const [isFocussed, setIsFocussed] = useState<boolean>(false);
   return (
     <div
@@ -42,10 +42,10 @@ const InputField: React.FC<Props> = ({ valueHandler, ...props }) => {
         onClick={() => setIsFocussed(() => true)}
         onBlur={() => setIsFocussed(() => false)}
         autoComplete={props.autoComplete}
-        value={valueHandler?.value}
+        value={handleChange?.value}
         onChange={(event) => {
-          valueHandler &&
-            valueHandler.setValue((obj: any) => ({
+          handleChange &&
+            handleChange.setValue((obj: any) => ({
               ...obj,
               [props.name]: event.target.value,
             }));
