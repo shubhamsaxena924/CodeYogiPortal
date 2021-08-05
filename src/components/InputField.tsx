@@ -1,17 +1,16 @@
-import React, { SetStateAction } from "react";
+import React, { InputHTMLAttributes, SetStateAction } from "react";
 import { useState } from "react";
 
-interface Props {
+interface Props extends InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;
   children?: React.ReactElement;
   labelForSR?: string;
-  id: string;
+  id?: string;
+  name: string; //These are optional in actual input element, so we are explicitly writing them here.
   type: string;
-  autoComplete?: string;
-  required?: boolean;
+  className?: string;
   valueHandler?: {
     value: string;
-    valueOf: string;
     setValue: React.Dispatch<SetStateAction<any>>;
   };
 }
@@ -25,14 +24,20 @@ const InputField: React.FC<Props> = ({ valueHandler, ...props }) => {
         " flex border-b transform duration-300"
       }
     >
-      <label className="sr-only" htmlFor={props.id}>
-        {props.labelForSR ? props.labelForSR : props.placeholder}
-      </label>
+      {props.id && (
+        <label className="sr-only" htmlFor={props.id}>
+          {props.labelForSR ? props.labelForSR : props.placeholder}
+        </label>
+      )}
       {props.children}
       <input
         id={props.id}
         type={props.type}
-        className="w-full p-0 pb-3 placeholder-gray-300 border-0 outline-none focus:ring-0"
+        name={props.name}
+        className={
+          "w-full p-0 pb-3 placeholder-gray-300 border-0 outline-none focus:ring-0 " +
+          props.className
+        }
         placeholder={props.placeholder}
         onClick={() => setIsFocussed(() => true)}
         onBlur={() => setIsFocussed(() => false)}
@@ -42,7 +47,7 @@ const InputField: React.FC<Props> = ({ valueHandler, ...props }) => {
           valueHandler &&
             valueHandler.setValue((obj: any) => ({
               ...obj,
-              [valueHandler.valueOf]: event.target.value,
+              [props.name]: event.target.value,
             }));
         }}
         required={props.required}

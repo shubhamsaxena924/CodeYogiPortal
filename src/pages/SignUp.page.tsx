@@ -1,8 +1,10 @@
-import { Switch } from "@headlessui/react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
+import * as yup from "yup";
+import CheckBox from "../components/CheckBox";
+import ToggleSwitch from "../components/ToggleSwitch";
 
 interface Props {}
 
@@ -21,6 +23,13 @@ const SignUpPage: React.FC<Props> = (props) => {
   }
   console.log(signUpData);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const signUpDataValidator = yup.object().shape({
+    username: yup.string().required().min(5),
+    email: yup.string().email().required(),
+    password: yup.string().min(8).required(),
+    isAgree: yup.boolean().isTrue(),
+  });
+  console.log(signUpDataValidator.isValidSync(signUpData));
   return (
     <div className="flex flex-col justify-center h-full max-w-md p-5 mx-auto md:p-0">
       <div className="mx-5">
@@ -39,16 +48,24 @@ const SignUpPage: React.FC<Props> = (props) => {
       </div>
       <form
         className="flex flex-col py-4 mx-5 space-y-6 md:space-y-8"
-        onSubmit={() => console.log()}
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (!signUpDataValidator.isValidSync(signUpData)) {
+            window.alert("Form submission rejected!!");
+            return;
+          }
+          window.alert("Account Created!!");
+        }}
       >
         <InputField
           type="text"
           placeholder="Username"
           id="username"
-          autoComplete="remove"
+          name={possibleKeys.username}
+          required
+          autoComplete="username"
           valueHandler={{
             value: signUpData.username,
-            valueOf: possibleKeys.username,
             setValue: setSignUpData,
           }}
         >
@@ -66,11 +83,12 @@ const SignUpPage: React.FC<Props> = (props) => {
         <InputField
           type="text"
           placeholder="Email ID"
+          required
           id="email"
+          name={possibleKeys.email}
           autoComplete="email"
           valueHandler={{
             value: signUpData.email,
-            valueOf: possibleKeys.email,
             setValue: setSignUpData,
           }}
         >
@@ -89,10 +107,11 @@ const SignUpPage: React.FC<Props> = (props) => {
           type={showPassword ? "text" : "password"}
           placeholder="Password"
           id="password"
+          name={possibleKeys.password}
+          required
           autoComplete="new-password"
           valueHandler={{
             value: signUpData.password,
-            valueOf: possibleKeys.password,
             setValue: setSignUpData,
           }}
         >
@@ -107,45 +126,31 @@ const SignUpPage: React.FC<Props> = (props) => {
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
         </InputField>
-        <div className="flex flex-row-reverse items-center justify-end">
-          <label htmlFor="isAgree" className="font-light text-gray-400">
-            I agree to the{" "}
-            <Link to="#" className="text-primary">
-              terms and conditions
-            </Link>
-          </label>
-          <input
-            type="checkbox"
+        <div className="flex justify-start">
+          <CheckBox
             id="isAgree"
-            name="isAgree"
-            checked={signUpData.isAgree}
-            onChange={(event) =>
-              setSignUpData((obj) => ({ ...obj, isAgree: !signUpData.isAgree }))
+            name={possibleKeys.isAgree}
+            label={
+              <>
+                I agree to the{" "}
+                <Link to="#" className="text-primary">
+                  terms and conditions
+                </Link>
+              </>
             }
-            className="w-3 h-3 mr-4 bg-gray-200 border-gray-400 rounded cursor-pointer text-primary focus:ring-primary"
+            required
+            checked={signUpData.isAgree}
+            valueHandler={{
+              value: signUpData.isAgree,
+              setValue: setSignUpData,
+            }}
           />
         </div>
         <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
-          <div className="flex flex-col items-center sm:flex-row">
-            <p className="">Show Password</p>
-            <label className="sr-only" htmlFor="showPassword"></label>
-            <Switch
-              type="button"
-              checked={showPassword}
-              onChange={() => setShowPassword((value: boolean) => !value)}
-              className={`${
-                showPassword ? "bg-primary" : "bg-gray-200"
-              } relative sm:ml-4 inline-flex flex-shrink-0 items-center shadow-lg hover:shadow-none h-5 rounded-full w-9 transform duration-1000`}
-            >
-              <span
-                className={`${
-                  showPassword
-                    ? "translate-x-5 bg-white"
-                    : "translate-x-1 bg-primary"
-                } inline-block w-3 h-3 transform duration-500 shadow-sm rounded-full`}
-              />
-            </Switch>
-          </div>
+          <ToggleSwitch
+            title="Show Password"
+            toggleHandler={{ isOn: showPassword, setSwitch: setShowPassword }}
+          />
           <Button buttonText="Get Started!" type="submit" />
         </div>
         <p className="pt-12 text-sm text-center">

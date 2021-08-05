@@ -1,9 +1,11 @@
-import { Switch } from "@headlessui/react";
 import React from "react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
+import * as yup from "yup";
+import CheckBox from "../components/CheckBox";
+import ToggleSwitch from "../components/ToggleSwitch";
 
 interface Props {}
 
@@ -14,11 +16,16 @@ const LoginPage: React.FC<Props> = (props) => {
     keepMeLoggedIn: false,
   });
   console.log(loginData);
-  const possibleKeys = {
-    email: "email",
-    password: "password",
-    keepMeLoggedIn: "keepMeLoggedIn",
-  };
+  enum possibleKeys {
+    email = "email",
+    password = "password",
+    keepMeLoggedIn = "keepMeLoggedIn",
+  }
+  const loginDataValidator = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup.string().required().min(8),
+  });
+  console.log(loginDataValidator.isValidSync(loginData));
   const [showPassword, setShowPassword] = useState<boolean>(false);
   return (
     <div className="flex flex-col justify-center h-full max-w-md p-5 mx-auto md:p-0 font-josefin">
@@ -46,15 +53,24 @@ const LoginPage: React.FC<Props> = (props) => {
       </div>
       <form
         className="flex flex-col py-4 mx-5 space-y-6 md:space-y-12"
-        onSubmit={() => console.log()}
+        onSubmit={(event) => {
+          event.preventDefault();
+          if (!loginDataValidator.isValidSync(loginData)) {
+            window.alert("Form submission rejected!!");
+            return;
+          }
+          window.alert("Logged in!!");
+        }}
       >
         <InputField
           type="text"
           placeholder="Email ID"
           id="email"
+          name={possibleKeys.email}
+          required
+          autoComplete="email"
           valueHandler={{
             value: loginData.email,
-            valueOf: possibleKeys.email,
             setValue: setLoginData,
           }}
         >
@@ -73,9 +89,11 @@ const LoginPage: React.FC<Props> = (props) => {
           type={showPassword ? "text" : "password"}
           placeholder="Password"
           id="password"
+          autoComplete="current-password"
+          name={possibleKeys.password}
+          required
           valueHandler={{
             value: loginData.password,
-            valueOf: possibleKeys.password,
             setValue: setLoginData,
           }}
         >
@@ -91,46 +109,22 @@ const LoginPage: React.FC<Props> = (props) => {
           </svg>
         </InputField>
         <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
-          <div className="flex flex-col items-center sm:flex-row">
-            <p className="">Show Password</p>
-            <label className="sr-only" htmlFor="showPassword"></label>
-            <Switch
-              type="button"
-              checked={showPassword}
-              onChange={() => setShowPassword((value) => !value)}
-              className={`${
-                showPassword ? "bg-primary" : "bg-gray-200"
-              } relative sm:ml-4 inline-flex flex-shrink-0 items-center shadow-lg hover:shadow-none h-5 rounded-full w-9 transform duration-1000`}
-            >
-              <span
-                className={`${
-                  showPassword
-                    ? "translate-x-5 bg-white"
-                    : "translate-x-1 bg-primary"
-                } inline-block w-3 h-3 transform duration-500 shadow-sm rounded-full`}
-              />
-            </Switch>
-          </div>
+          <ToggleSwitch
+            title="Show Password"
+            toggleHandler={{ isOn: showPassword, setSwitch: setShowPassword }}
+          />
           <Button buttonText="Log In" type="submit" />
         </div>
-        <div className="flex flex-row-reverse items-center justify-center">
-          <label htmlFor="keepLogged" className="font-light text-gray-400">
-            Keep me logged in
-          </label>
-          <input
-            type="checkbox"
-            id="keepLogged"
-            name="keepLogged"
-            checked={loginData.keepMeLoggedIn}
-            className="w-3 h-3 mr-4 bg-gray-200 border-gray-400 rounded cursor-pointer text-primary focus:ring-primary"
-            onChange={(event) =>
-              setLoginData((obj) => ({
-                ...obj,
-                keepMeLoggedIn: !loginData.keepMeLoggedIn,
-              }))
-            }
-          />
-        </div>
+        <CheckBox
+          id="keepLogged"
+          name={possibleKeys.keepMeLoggedIn}
+          checked={loginData.keepMeLoggedIn}
+          label="Keep me logged in"
+          valueHandler={{
+            value: loginData.keepMeLoggedIn,
+            setValue: setLoginData,
+          }}
+        />
         <Link
           to="/pwrecovery"
           className="self-center mt-5 text-lg font-medium text-primary"
