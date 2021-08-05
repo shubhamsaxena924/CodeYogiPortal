@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FocusEvent, useState } from "react";
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
@@ -15,6 +15,11 @@ const SignUpPage: React.FC<Props> = (props) => {
     password: "",
     isAgree: false,
   });
+  const [touched, setTouched] = useState({
+    username: false,
+    email: false,
+    password: false,
+  });
   enum possibleKeys {
     username = "username",
     email = "email",
@@ -22,6 +27,12 @@ const SignUpPage: React.FC<Props> = (props) => {
     isAgree = "isAgree",
   }
   console.log(signUpData);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSignUpData({ ...signUpData, [event.target.name]: event.target.value });
+  };
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    setTouched({ ...touched, [event.target.name]: true });
+  };
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const signUpDataValidator = yup.object().shape({
     username: yup.string().required().min(5),
@@ -30,13 +41,18 @@ const SignUpPage: React.FC<Props> = (props) => {
     isAgree: yup.boolean().isTrue(),
   });
   console.log(signUpDataValidator.isValidSync(signUpData));
+  const getError = (key: "email" | "password" | "username") => {
+    if (touched[key] && !signUpData[key]) {
+      return "This is a required field!";
+    }
+  };
   return (
-    <div className="flex flex-col justify-center h-full max-w-md p-5 mx-auto md:p-0">
+    <div className="flex flex-col justify-center max-w-md mx-auto">
       <div className="mx-5">
         <h1 className="text-3xl lg:text-4xl">
           Get started by creating an account
         </h1>
-        <p className="mt-2 mb-6 md:mb-10">
+        <p className="mt-2 mb-6 md:mb-8">
           Already have an account?{" "}
           <Link
             to="/login"
@@ -47,7 +63,7 @@ const SignUpPage: React.FC<Props> = (props) => {
         </p>
       </div>
       <form
-        className="flex flex-col py-4 mx-5 space-y-6 md:space-y-8"
+        className="flex flex-col py-4 mx-5 space-y-10 md:space-y-8"
         onSubmit={(event) => {
           event.preventDefault();
           if (!signUpDataValidator.isValidSync(signUpData)) {
@@ -64,10 +80,9 @@ const SignUpPage: React.FC<Props> = (props) => {
           name={possibleKeys.username}
           required
           autoComplete="username"
-          handleChange={{
-            value: signUpData.username,
-            setValue: setSignUpData,
-          }}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={getError("username")}
         >
           <svg
             viewBox="0 0 24 24"
@@ -87,10 +102,9 @@ const SignUpPage: React.FC<Props> = (props) => {
           id="email"
           name={possibleKeys.email}
           autoComplete="email"
-          handleChange={{
-            value: signUpData.email,
-            setValue: setSignUpData,
-          }}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={getError("email")}
         >
           <svg
             viewBox="0 0 24 24"
@@ -110,10 +124,9 @@ const SignUpPage: React.FC<Props> = (props) => {
           name={possibleKeys.password}
           required
           autoComplete="new-password"
-          handleChange={{
-            value: signUpData.password,
-            setValue: setSignUpData,
-          }}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={getError("password")}
         >
           <svg
             viewBox="0 0 24 24"
@@ -140,9 +153,8 @@ const SignUpPage: React.FC<Props> = (props) => {
             }
             required
             checked={signUpData.isAgree}
-            handleChange={{
-              value: signUpData.isAgree,
-              setValue: setSignUpData,
+            onChange={() => {
+              setSignUpData((obj) => ({ ...obj, isAgree: !obj.isAgree }));
             }}
           />
         </div>
@@ -151,9 +163,17 @@ const SignUpPage: React.FC<Props> = (props) => {
             title="Show Password"
             toggleHandler={{ isOn: showPassword, setSwitch: setShowPassword }}
           />
-          <Button buttonText="Get Started!" type="submit" />
+          <Button
+            buttonText="Get Started!"
+            type="submit"
+            disabled={
+              getError("email") || getError("password") || getError("username")
+                ? true
+                : false
+            }
+          />
         </div>
-        <p className="pt-12 text-sm text-center">
+        <p className="pt-8 text-sm text-center">
           © 2021 All Rights Reserved.{" "}
           <Link to="#" className="text-primary">
             Cookie Preferences

@@ -6,7 +6,7 @@ interface Props {}
 
 const App: React.FC<Props> = (props) => {
   return (
-    <>
+    <div>
       <BrowserRouter>
         <Switch>
           <Route path={["/login", "/signup"]} exact>
@@ -14,7 +14,7 @@ const App: React.FC<Props> = (props) => {
           </Route>
         </Switch>
       </BrowserRouter>
-    </>
+    </div>
   );
 };
 

@@ -8,7 +8,7 @@ interface Props {}
 const AuthPage: React.FC<Props> = (props) => {
   return (
     <>
-      <div className="absolute flex w-full h-full">
+      <div className="flex w-full">
         <div className="absolute right-0 m-5 lg:hidden">
           <svg
             width="50"
@@ -288,7 +288,7 @@ const AuthPage: React.FC<Props> = (props) => {
             </defs>
           </svg>
         </div>
-        <div className="items-center justify-center flex-1 text-gray-700 font-josefin">
+        <div className="flex items-center justify-center flex-1 py-16 text-gray-700 lg:max-h-screen font-josefin">
           <Route path="/login">
             <LoginPage />
           </Route>
@@ -296,7 +296,7 @@ const AuthPage: React.FC<Props> = (props) => {
             <SignUpPage />
           </Route>
         </div>
-        <div className="items-center justify-center flex-1 hidden w-full lg:flex bg-secondary">
+        <div className="relative bottom-0 items-center justify-center flex-1 hidden min-h-screen align-middle lg:flex bg-secondary">
           <svg
             width="65%"
             height="65%"

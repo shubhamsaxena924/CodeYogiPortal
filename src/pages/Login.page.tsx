@@ -1,5 +1,5 @@
-import React from "react";
-import { useState } from "react";
+import React, { ChangeEvent, useState, FocusEvent } from "react";
+
 import { Link } from "react-router-dom";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
@@ -15,7 +15,14 @@ const LoginPage: React.FC<Props> = (props) => {
     password: "",
     keepMeLoggedIn: false,
   });
+  const [touched, setTouched] = useState({ email: false, password: false });
   console.log(loginData);
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setLoginData({ ...loginData, [event.target.name]: event.target.value });
+  };
+  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+    setTouched({ ...touched, [event.target.name]: true });
+  };
   enum possibleKeys {
     email = "email",
     password = "password",
@@ -27,8 +34,13 @@ const LoginPage: React.FC<Props> = (props) => {
   });
   console.log(loginDataValidator.isValidSync(loginData));
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const getError = (key: "email" | "password") => {
+    if (touched[key] && !loginData[key]) {
+      return "This is a required field!";
+    }
+  };
   return (
-    <div className="flex flex-col justify-center h-full max-w-md p-5 mx-auto md:p-0 font-josefin">
+    <div className="flex flex-col justify-center w-full max-w-md mx-auto font-josefin">
       <div className="mx-5">
         <h1 className="text-3xl lg:text-4xl">
           Log In to{" "}
@@ -52,7 +64,7 @@ const LoginPage: React.FC<Props> = (props) => {
         </p>
       </div>
       <form
-        className="flex flex-col py-4 mx-5 space-y-6 md:space-y-12"
+        className="flex flex-col py-4 mx-5 space-y-10 md:space-y-12"
         onSubmit={(event) => {
           event.preventDefault();
           if (!loginDataValidator.isValidSync(loginData)) {
@@ -69,10 +81,9 @@ const LoginPage: React.FC<Props> = (props) => {
           name={possibleKeys.email}
           required
           autoComplete="email"
-          handleChange={{
-            value: loginData.email,
-            setValue: setLoginData,
-          }}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={getError("email")}
         >
           <svg
             viewBox="0 0 24 24"
@@ -92,10 +103,9 @@ const LoginPage: React.FC<Props> = (props) => {
           autoComplete="current-password"
           name={possibleKeys.password}
           required
-          handleChange={{
-            value: loginData.password,
-            setValue: setLoginData,
-          }}
+          onChange={handleChange}
+          onBlur={handleBlur}
+          error={getError("password")}
         >
           <svg
             viewBox="0 0 24 24"
@@ -113,16 +123,22 @@ const LoginPage: React.FC<Props> = (props) => {
             title="Show Password"
             toggleHandler={{ isOn: showPassword, setSwitch: setShowPassword }}
           />
-          <Button buttonText="Log In" type="submit" />
+          <Button
+            buttonText="Log In"
+            type="submit"
+            disabled={getError("email") || getError("password") ? true : false}
+          />
         </div>
         <CheckBox
           id="keepLogged"
           name={possibleKeys.keepMeLoggedIn}
           checked={loginData.keepMeLoggedIn}
           label="Keep me logged in"
-          handleChange={{
-            value: loginData.keepMeLoggedIn,
-            setValue: setLoginData,
+          onChange={() => {
+            setLoginData((obj) => ({
+              ...obj,
+              keepMeLoggedIn: !obj.keepMeLoggedIn,
+            }));
           }}
         />
         <Link
