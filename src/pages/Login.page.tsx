@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
@@ -7,6 +6,7 @@ import * as yup from "yup";
 import CheckBox from "../components/CheckBox";
 import ToggleSwitch from "../components/ToggleSwitch";
 import { useFormik } from "formik";
+import { ImSpinner9 } from "react-icons/im";
 
 interface Props {}
 
@@ -49,7 +49,15 @@ const LoginPage: React.FC<Props> = (props) => {
   }
 
   //formik way
-  const { values, isValid, errors, getFieldProps, touched } = useFormik({
+  const {
+    values,
+    isValid,
+    errors,
+    getFieldProps,
+    touched,
+    handleSubmit,
+    isSubmitting,
+  } = useFormik({
     initialValues: {
       email: "",
       password: "",
@@ -59,20 +67,24 @@ const LoginPage: React.FC<Props> = (props) => {
       password: yup.string().required().min(8),
     }),
     onSubmit: (data) => {
-      console.log("form submitting", data);
+      console.log("loading...", data);
       setTimeout(() => {
-        console.log("form submitted succesfully");
+        console.log("Logged In");
         history.push("/dashboard");
-      }, 5000);
+      }, 2000);
     },
   });
 
-  console.log(
-    values,
-    "isValid? " + isValid,
-    "keepLoggedIn? " + keepLoggedIn,
-    "\n",
-    errors
+  useEffect(
+    () =>
+      console.log(
+        values,
+        "isValid? " + isValid,
+        "keepLoggedIn? " + keepLoggedIn,
+        "\n",
+        errors
+      ),
+    [values, isValid, keepLoggedIn, errors]
   );
 
   return (
@@ -81,7 +93,7 @@ const LoginPage: React.FC<Props> = (props) => {
         <h1 className="text-3xl lg:text-4xl">
           Log In to{" "}
           <a
-            className="font-semibold text-primary"
+            className="font-semibold text-auth-primary"
             href="https://codeyogi.io"
             target="_blank"
             rel="noreferrer"
@@ -93,7 +105,7 @@ const LoginPage: React.FC<Props> = (props) => {
           New Here?{" "}
           <Link
             to="/signup"
-            className="underline text-primary hover:no-underline"
+            className="underline text-auth-primary hover:no-underline"
           >
             Create an account
           </Link>
@@ -101,14 +113,7 @@ const LoginPage: React.FC<Props> = (props) => {
       </div>
       <form
         className="flex flex-col py-4 mx-5 space-y-10 md:space-y-12"
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (!errors) {
-            window.alert("Form submission rejected!!");
-            return;
-          }
-          window.alert("Logged in!!");
-        }}
+        onSubmit={handleSubmit}
       >
         <InputField
           type="text"
@@ -125,7 +130,7 @@ const LoginPage: React.FC<Props> = (props) => {
             fill="rgba(27, 85, 226, 0.23921568627450981)"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-primary"
+            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-auth-primary"
           >
             <circle cx="12" cy="12" r="4"></circle>
             <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path>
@@ -146,7 +151,7 @@ const LoginPage: React.FC<Props> = (props) => {
             fill="rgba(27, 85, 226, 0.23921568627450981)"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-primary"
+            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-auth-primary"
           >
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
@@ -157,11 +162,16 @@ const LoginPage: React.FC<Props> = (props) => {
             title="Show Password"
             toggleHandler={{ isOn: showPassword, setSwitch: setShowPassword }}
           />
-          <Button
-            buttonText="Log In"
-            type="submit"
-            disabled={errors ? true : false}
-          />
+          <Button type="submit" disabled={!isValid}>
+            <div className="flex items-center justify-between">
+              <ImSpinner9
+                className={
+                  (isSubmitting ? "block " : "hidden ") + " animate-spin mr-2"
+                }
+              ></ImSpinner9>
+              Log in
+            </div>
+          </Button>
         </div>
         <CheckBox
           id="keepLogged"
@@ -174,24 +184,24 @@ const LoginPage: React.FC<Props> = (props) => {
         />
         <Link
           to="/pwrecovery"
-          className="self-center mt-5 text-lg font-medium text-primary"
+          className="self-center mt-5 text-lg font-medium text-auth-primary"
         >
           Forgot Password?
         </Link>
         <p className="text-sm text-center">
           © 2021 All Rights Reserved.{" "}
-          <Link to="#" className="text-primary">
+          <Link to="#" className="text-auth-primary">
             Cookie Preferences
           </Link>
           ,{" "}
-          <Link to="#" className="text-primary">
+          <Link to="#" className="text-auth-primary">
             Privacy
           </Link>
           , and{" "}
-          <Link to="#" className="text-primary">
+          <Link to="#" className="text-auth-primary">
             Terms
           </Link>
-          .
+          . Recreated by Shubham Saxena.
         </p>
       </form>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
@@ -6,6 +6,7 @@ import * as yup from "yup";
 import CheckBox from "../components/CheckBox";
 import ToggleSwitch from "../components/ToggleSwitch";
 import { useFormik } from "formik";
+import { ImSpinner9 } from "react-icons/im";
 
 interface Props {}
 
@@ -50,7 +51,15 @@ const SignUpPage: React.FC<Props> = (props) => {
   // };
 
   //Formik way
-  const { getFieldProps, errors, touched, isValid, values } = useFormik({
+  const {
+    getFieldProps,
+    errors,
+    touched,
+    isValid,
+    values,
+    handleSubmit,
+    isSubmitting,
+  } = useFormik({
     initialValues: {
       email: "",
       password: "",
@@ -66,15 +75,19 @@ const SignUpPage: React.FC<Props> = (props) => {
         .isTrue("you must agree to the terms and conditions to proceed"),
     }),
     onSubmit: (data) => {
-      console.log("form submitting", data);
+      console.log("loading...", data);
       setTimeout(() => {
-        console.log("form submitted succesfully");
+        console.log("Account created...");
         history.push("/dashboard");
-      }, 5000);
+      }, 2000);
     },
   });
 
-  console.log(values, "isValid? " + isValid, "\n", errors);
+  useEffect(() => console.log(values, "isValid? " + isValid, "\n", errors), [
+    values,
+    isValid,
+    errors,
+  ]);
 
   return (
     <div className="flex flex-col justify-center max-w-md mx-auto">
@@ -86,7 +99,7 @@ const SignUpPage: React.FC<Props> = (props) => {
           Already have an account?{" "}
           <Link
             to="/login"
-            className="underline text-primary hover:no-underline"
+            className="underline text-auth-primary hover:no-underline"
           >
             Log in
           </Link>
@@ -94,14 +107,7 @@ const SignUpPage: React.FC<Props> = (props) => {
       </div>
       <form
         className="flex flex-col py-4 mx-5 space-y-10 md:space-y-8"
-        onSubmit={(event) => {
-          event.preventDefault();
-          if (!errors) {
-            window.alert("Form submission rejected!!");
-            return;
-          }
-          window.alert("Account Created!!");
-        }}
+        onSubmit={handleSubmit}
       >
         <InputField
           type="text"
@@ -118,7 +124,7 @@ const SignUpPage: React.FC<Props> = (props) => {
             fill="rgba(27, 85, 226, 0.23921568627450981)"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-primary"
+            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-auth-primary"
           >
             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
             <circle cx="12" cy="7" r="4"></circle>
@@ -139,7 +145,7 @@ const SignUpPage: React.FC<Props> = (props) => {
             fill="rgba(27, 85, 226, 0.23921568627450981)"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-primary"
+            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-auth-primary"
           >
             <circle cx="12" cy="12" r="4"></circle>
             <path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"></path>
@@ -160,7 +166,7 @@ const SignUpPage: React.FC<Props> = (props) => {
             fill="rgba(27, 85, 226, 0.23921568627450981)"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-primary"
+            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-auth-primary"
           >
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
@@ -174,7 +180,7 @@ const SignUpPage: React.FC<Props> = (props) => {
             label={
               <>
                 I agree to the{" "}
-                <Link to="#" className="text-primary">
+                <Link to="#" className="text-auth-primary">
                   terms and conditions
                 </Link>
               </>
@@ -191,26 +197,31 @@ const SignUpPage: React.FC<Props> = (props) => {
             title="Show Password"
             toggleHandler={{ isOn: showPassword, setSwitch: setShowPassword }}
           />
-          <Button
-            buttonText="Get Started!"
-            type="submit"
-            disabled={errors ? true : false}
-          />
+          <Button type="submit" disabled={!isValid}>
+            <div className="flex items-center justify-between">
+              <ImSpinner9
+                className={
+                  (isSubmitting ? "block " : "hidden ") + " animate-spin mr-2"
+                }
+              ></ImSpinner9>
+              Get Started!
+            </div>
+          </Button>
         </div>
         <p className="pt-8 text-sm text-center">
           © 2021 All Rights Reserved.{" "}
-          <Link to="#" className="text-primary">
+          <Link to="#" className="text-auth-primary">
             Cookie Preferences
           </Link>
           ,{" "}
-          <Link to="#" className="text-primary">
+          <Link to="#" className="text-auth-primary">
             Privacy
           </Link>
           , and{" "}
-          <Link to="#" className="text-primary">
+          <Link to="#" className="text-auth-primary">
             Terms
           </Link>
-          .
+          . Recreated by Shubham Saxena.
         </p>
       </form>
     </div>

@@ -30,7 +30,7 @@ const InputField: React.FC<Props> = ({
     <div>
       <div
         className={
-          (isFocussed ? "border-primary " : "border-gray-200 ") +
+          (isFocussed ? "border-auth-primary " : "border-gray-200 ") +
           " flex border-b transform duration-300 "
         }
       >
@@ -71,11 +71,11 @@ const InputField: React.FC<Props> = ({
               setShowToolTip(() => false);
             }}
           >
-            <HiExclamationCircle className="inline w-5 h-5 m-1 text-primary animate-bounce"></HiExclamationCircle>
+            <HiExclamationCircle className="inline w-5 h-5 m-1 text-auth-primary animate-bounce"></HiExclamationCircle>
             <span
               className={
                 (showToolTip ? "sm:visible" : "invisible") +
-                " absolute sm:inline-block hidden -right-10 left-7 -top-6 text-center p-2 w-28 md:w-40 rounded-xl rounded-bl-none text-white font-light bg-primary "
+                " absolute sm:inline-block hidden -right-10 left-7 -top-6 text-center p-2 w-28 md:w-40 rounded-xl rounded-bl-none text-white font-light bg-auth-primary "
               }
             >
               {error}
@@ -84,7 +84,7 @@ const InputField: React.FC<Props> = ({
         </Transition>
       </div>
       {error && touched && (
-        <span className="absolute px-2 pt-1 mt-1 text-xs text-white rounded-md sm:hidden bg-primary">
+        <span className="absolute px-2 pt-1 mt-1 text-xs text-white rounded-md sm:hidden bg-auth-primary">
           {error}
         </span>
       )}

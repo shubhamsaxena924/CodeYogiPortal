@@ -18,7 +18,7 @@ const CheckBox: React.FC<Props> = ({ label, className, ...rest }) => {
         {...rest}
         type="checkbox"
         className={
-          "w-3 h-3 mr-4 bg-gray-200 border-gray-400 rounded cursor-pointer text-primary focus:ring-primary " +
+          "w-3 h-3 mr-4 bg-gray-200 border-gray-400 rounded cursor-pointer text-auth-primary focus:ring-auth-primary " +
           className
         }
       />

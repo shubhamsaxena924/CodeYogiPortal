@@ -4,9 +4,10 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#4361ee",
-        secondary: "#060818",
-        logo: "#1C8ADB",
+        "auth-primary": "#4361ee",
+        "auth-secondary": "#060818",
+        "app-primary": "#1937ca",
+        "app-secondary": "#fafafa",
       },
       fontFamily: {
         josefin: ["Josefin Sans", "sans-serif"],
