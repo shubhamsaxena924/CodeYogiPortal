@@ -10,6 +10,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   id?: string;
   name: string; //These are optional in actual input element, so we are explicitly writing them here.
   type: string;
+  touched?: boolean;
   className?: string;
   error?: string;
 }
@@ -20,6 +21,7 @@ const InputField: React.FC<Props> = ({
   className,
   onBlur,
   error,
+  touched,
   ...rest
 }) => {
   const [isFocussed, setIsFocussed] = useState<boolean>(false);
@@ -51,7 +53,7 @@ const InputField: React.FC<Props> = ({
           }}
         />
         <Transition
-          show={error ? true : false}
+          show={error && touched ? true : false}
           as={Fragment}
           enter="transition-opacity duration-700"
           enterFrom="opacity-0"
@@ -81,7 +83,7 @@ const InputField: React.FC<Props> = ({
           </div>
         </Transition>
       </div>
-      {error && (
+      {error && touched && (
         <span className="absolute px-2 pt-1 mt-1 text-xs text-white rounded-md sm:hidden bg-primary">
           {error}
         </span>

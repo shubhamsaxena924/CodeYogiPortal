@@ -1,44 +1,80 @@
-import React, { ChangeEvent, useState, FocusEvent } from "react";
+import React, { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
 import * as yup from "yup";
 import CheckBox from "../components/CheckBox";
 import ToggleSwitch from "../components/ToggleSwitch";
+import { useFormik } from "formik";
 
 interface Props {}
 
 const LoginPage: React.FC<Props> = (props) => {
-  const [loginData, setLoginData] = useState({
-    email: "",
-    password: "",
-    keepMeLoggedIn: false,
-  });
-  const [touched, setTouched] = useState({ email: false, password: false });
-  console.log(loginData);
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setLoginData({ ...loginData, [event.target.name]: event.target.value });
-  };
-  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
-    setTouched({ ...touched, [event.target.name]: true });
-  };
+  const history = useHistory();
+  const [keepLoggedIn, setKeepLoggedIn] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  // Manual Way (Formik does this all on its own)
+  // const [loginData, setLoginData] = useState({
+  //   email: "",
+  //   password: "",
+  //   keepMeLoggedIn: false,
+  // });
+
+  // Handle Change
+  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setLoginData({ ...loginData, [event.target.name]: event.target.value });
+  // };
+  // Handle Blur
+  // const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+  //   setTouched({ ...touched, [event.target.name]: true });
+  // };
+  // yup validator
+  // const loginDataValidator = yup.object().shape({
+  //   email: yup.string().email().required(),
+  //   password: yup.string().required().min(8),
+  // });
+  // console.log(loginDataValidator.isValidSync(loginData));
+  // const getError = (key: "email" | "password") => {
+  //   if (touched[key] && !loginData[key]) {
+  //     return "This is a required field!";
+  //   }
+  // };
+
   enum possibleKeys {
     email = "email",
     password = "password",
     keepMeLoggedIn = "keepMeLoggedIn",
   }
-  const loginDataValidator = yup.object().shape({
-    email: yup.string().email().required(),
-    password: yup.string().required().min(8),
+
+  //formik way
+  const { values, isValid, errors, getFieldProps, touched } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: yup.object().shape({
+      email: yup.string().email().required(),
+      password: yup.string().required().min(8),
+    }),
+    onSubmit: (data) => {
+      console.log("form submitting", data);
+      setTimeout(() => {
+        console.log("form submitted succesfully");
+        history.push("/dashboard");
+      }, 5000);
+    },
   });
-  console.log(loginDataValidator.isValidSync(loginData));
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const getError = (key: "email" | "password") => {
-    if (touched[key] && !loginData[key]) {
-      return "This is a required field!";
-    }
-  };
+
+  console.log(
+    values,
+    "isValid? " + isValid,
+    "keepLoggedIn? " + keepLoggedIn,
+    "\n",
+    errors
+  );
+
   return (
     <div className="flex flex-col justify-center w-full max-w-md mx-auto font-josefin">
       <div className="mx-5">
@@ -67,7 +103,7 @@ const LoginPage: React.FC<Props> = (props) => {
         className="flex flex-col py-4 mx-5 space-y-10 md:space-y-12"
         onSubmit={(event) => {
           event.preventDefault();
-          if (!loginDataValidator.isValidSync(loginData)) {
+          if (!errors) {
             window.alert("Form submission rejected!!");
             return;
           }
@@ -78,12 +114,11 @@ const LoginPage: React.FC<Props> = (props) => {
           type="text"
           placeholder="Email ID"
           id="email"
-          name={possibleKeys.email}
+          {...getFieldProps(possibleKeys.email)}
           required
           autoComplete="email"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={getError("email")}
+          error={errors.email}
+          touched={touched.email}
         >
           <svg
             viewBox="0 0 24 24"
@@ -101,11 +136,10 @@ const LoginPage: React.FC<Props> = (props) => {
           placeholder="Password"
           id="password"
           autoComplete="current-password"
-          name={possibleKeys.password}
+          {...getFieldProps(possibleKeys.password)}
           required
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={getError("password")}
+          error={errors.password}
+          touched={touched.password}
         >
           <svg
             viewBox="0 0 24 24"
@@ -126,19 +160,16 @@ const LoginPage: React.FC<Props> = (props) => {
           <Button
             buttonText="Log In"
             type="submit"
-            disabled={getError("email") || getError("password") ? true : false}
+            disabled={errors ? true : false}
           />
         </div>
         <CheckBox
           id="keepLogged"
           name={possibleKeys.keepMeLoggedIn}
-          checked={loginData.keepMeLoggedIn}
+          checked={keepLoggedIn}
           label="Keep me logged in"
           onChange={() => {
-            setLoginData((obj) => ({
-              ...obj,
-              keepMeLoggedIn: !obj.keepMeLoggedIn,
-            }));
+            setKeepLoggedIn((value) => !value);
           }}
         />
         <Link

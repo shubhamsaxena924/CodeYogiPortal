@@ -1,51 +1,81 @@
-import React, { ChangeEvent, FocusEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 import Button from "../components/Button";
 import InputField from "../components/InputField";
 import * as yup from "yup";
 import CheckBox from "../components/CheckBox";
 import ToggleSwitch from "../components/ToggleSwitch";
+import { useFormik } from "formik";
 
 interface Props {}
 
 const SignUpPage: React.FC<Props> = (props) => {
-  const [signUpData, setSignUpData] = useState({
-    username: "",
-    email: "",
-    password: "",
-    isAgree: false,
-  });
-  const [touched, setTouched] = useState({
-    username: false,
-    email: false,
-    password: false,
-  });
+  const history = useHistory();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   enum possibleKeys {
     username = "username",
     email = "email",
     password = "password",
     isAgree = "isAgree",
   }
-  console.log(signUpData);
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSignUpData({ ...signUpData, [event.target.name]: event.target.value });
-  };
-  const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
-    setTouched({ ...touched, [event.target.name]: true });
-  };
-  const [showPassword, setShowPassword] = useState<boolean>(false);
-  const signUpDataValidator = yup.object().shape({
-    username: yup.string().required().min(5),
-    email: yup.string().email().required(),
-    password: yup.string().min(8).required(),
-    isAgree: yup.boolean().isTrue(),
+  //Manual Way
+  // const [signUpData, setSignUpData] = useState({
+  //   username: "",
+  //   email: "",
+  //   password: "",
+  //   isAgree: false,
+  // });
+  // const [touched, setTouched] = useState({
+  //   username: false,
+  //   email: false,
+  //   password: false,
+  // });
+  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   setSignUpData({ ...signUpData, [event.target.name]: event.target.value });
+  // };
+  // const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
+  //   setTouched({ ...touched, [event.target.name]: true });
+  // };
+  // const signUpDataValidator = yup.object().shape({
+  //   username: yup.string().required().min(5),
+  //   email: yup.string().email().required(),
+  //   password: yup.string().min(8).required(),
+  //   isAgree: yup.boolean().isTrue(),
+  // });
+  // console.log(signUpDataValidator.isValidSync(signUpData));
+  // const getError = (key: "email" | "password" | "username") => {
+  //   if (touched[key] && !signUpData[key]) {
+  //     return "This is a required field!";
+  //   }
+  // };
+
+  //Formik way
+  const { getFieldProps, errors, touched, isValid, values } = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+      username: "",
+      isAgree: false,
+    },
+    validationSchema: yup.object().shape({
+      email: yup.string().email().required(),
+      password: yup.string().min(8).required(),
+      username: yup.string().min(5).required(),
+      isAgree: yup
+        .boolean()
+        .isTrue("you must agree to the terms and conditions to proceed"),
+    }),
+    onSubmit: (data) => {
+      console.log("form submitting", data);
+      setTimeout(() => {
+        console.log("form submitted succesfully");
+        history.push("/dashboard");
+      }, 5000);
+    },
   });
-  console.log(signUpDataValidator.isValidSync(signUpData));
-  const getError = (key: "email" | "password" | "username") => {
-    if (touched[key] && !signUpData[key]) {
-      return "This is a required field!";
-    }
-  };
+
+  console.log(values, "isValid? " + isValid, "\n", errors);
+
   return (
     <div className="flex flex-col justify-center max-w-md mx-auto">
       <div className="mx-5">
@@ -66,7 +96,7 @@ const SignUpPage: React.FC<Props> = (props) => {
         className="flex flex-col py-4 mx-5 space-y-10 md:space-y-8"
         onSubmit={(event) => {
           event.preventDefault();
-          if (!signUpDataValidator.isValidSync(signUpData)) {
+          if (!errors) {
             window.alert("Form submission rejected!!");
             return;
           }
@@ -77,12 +107,11 @@ const SignUpPage: React.FC<Props> = (props) => {
           type="text"
           placeholder="Username"
           id="username"
-          name={possibleKeys.username}
           required
+          {...getFieldProps(possibleKeys.username)}
           autoComplete="username"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={getError("username")}
+          error={errors.username}
+          touched={touched.username}
         >
           <svg
             viewBox="0 0 24 24"
@@ -100,11 +129,10 @@ const SignUpPage: React.FC<Props> = (props) => {
           placeholder="Email ID"
           required
           id="email"
-          name={possibleKeys.email}
+          {...getFieldProps(possibleKeys.email)}
           autoComplete="email"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={getError("email")}
+          error={errors.email}
+          touched={touched.email}
         >
           <svg
             viewBox="0 0 24 24"
@@ -121,12 +149,11 @@ const SignUpPage: React.FC<Props> = (props) => {
           type={showPassword ? "text" : "password"}
           placeholder="Password"
           id="password"
-          name={possibleKeys.password}
+          {...getFieldProps(possibleKeys.password)}
           required
           autoComplete="new-password"
-          onChange={handleChange}
-          onBlur={handleBlur}
-          error={getError("password")}
+          error={errors.password}
+          touched={touched.password}
         >
           <svg
             viewBox="0 0 24 24"
@@ -142,7 +169,8 @@ const SignUpPage: React.FC<Props> = (props) => {
         <div className="flex justify-start">
           <CheckBox
             id="isAgree"
-            name={possibleKeys.isAgree}
+            // name={possibleKeys.isAgree}
+            {...getFieldProps(possibleKeys.isAgree)}
             label={
               <>
                 I agree to the{" "}
@@ -152,10 +180,10 @@ const SignUpPage: React.FC<Props> = (props) => {
               </>
             }
             required
-            checked={signUpData.isAgree}
-            onChange={() => {
-              setSignUpData((obj) => ({ ...obj, isAgree: !obj.isAgree }));
-            }}
+            // checked={signUpData.isAgree}
+            // onChange={() => {
+            //   setSignUpData((obj) => ({ ...obj, isAgree: !obj.isAgree }));
+            // }}
           />
         </div>
         <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
@@ -166,11 +194,7 @@ const SignUpPage: React.FC<Props> = (props) => {
           <Button
             buttonText="Get Started!"
             type="submit"
-            disabled={
-              getError("email") || getError("password") || getError("username")
-                ? true
-                : false
-            }
+            disabled={errors ? true : false}
           />
         </div>
         <p className="pt-8 text-sm text-center">
