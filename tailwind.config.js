@@ -7,13 +7,17 @@ module.exports = {
         "auth-primary": "#4361ee",
         "auth-secondary": "#060818",
         "app-primary": "#1937ca",
-        "app-secondary": "#fafafa",
+        "app-light-gray": "#fafafa",
+        "app-secondary": "#1abc9c",
+        "app-dark": "#3b3f5c",
       },
       fontFamily: {
         josefin: ["Josefin Sans", "sans-serif"],
       },
       boxShadow: {
         primaryButton: "0 10px 20px -10px #4361ee",
+        secondaryButton: "0 10px 20px -10px #1abc9c",
+        darkButton: "0 10px 20px -10px #3b3f5c",
       },
     },
   },

@@ -10,7 +10,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 
 const CheckBox: React.FC<Props> = ({ label, className, ...rest }) => {
   return (
-    <div className="flex flex-row-reverse items-center justify-center">
+    <div className="flex flex-row-reverse items-center justify-end">
       <label htmlFor={rest.id} className="font-light text-gray-400">
         {label}
       </label>

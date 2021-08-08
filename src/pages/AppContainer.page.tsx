@@ -271,7 +271,7 @@ const AppContainer: React.FC<Props> = (props) => {
           </svg>
         </a>
       </div>
-      <div className="sticky top-0 left-0 right-0 z-0 flex items-center h-16 pl-20 text-lg bg-app-secondary">
+      <div className="sticky top-0 left-0 right-0 z-0 flex items-center h-16 pl-20 text-lg bg-app-light-gray">
         Dashboard
       </div>
       <div className="h-screen mt-20">hello</div>

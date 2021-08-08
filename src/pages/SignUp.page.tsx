@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import Button from "../components/Button";
-import InputField from "../components/InputField";
+import Button from "../components/button/Button";
+import InputField from "../components/input/InputField";
 import * as yup from "yup";
-import CheckBox from "../components/CheckBox";
-import ToggleSwitch from "../components/ToggleSwitch";
+import CheckBox from "../components/checkbox/CheckBox";
+import ToggleSwitch from "../components/toggleSwitch/ToggleSwitch";
 import { useFormik } from "formik";
 import { ImSpinner9 } from "react-icons/im";
 
@@ -197,16 +197,15 @@ const SignUpPage: React.FC<Props> = (props) => {
             title="Show Password"
             toggleHandler={{ isOn: showPassword, setSwitch: setShowPassword }}
           />
-          <Button type="submit" disabled={!isValid}>
-            <div className="flex items-center justify-between">
-              <ImSpinner9
-                className={
-                  (isSubmitting ? "block " : "hidden ") + " animate-spin mr-2"
-                }
-              ></ImSpinner9>
-              Get Started!
-            </div>
-          </Button>
+          <Button
+            type="submit"
+            disabled={!isValid}
+            buttonText="Get Started!"
+            Icon={ImSpinner9}
+            iconStylingClasses={
+              (isSubmitting ? "block " : "hidden ") + " animate-spin mr-2"
+            }
+          />
         </div>
         <p className="pt-8 text-sm text-center">
           © 2021 All Rights Reserved.{" "}

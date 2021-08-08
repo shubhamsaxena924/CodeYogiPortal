@@ -1,6 +1,7 @@
 import { Transition } from "@headlessui/react";
 import React, { Fragment, InputHTMLAttributes } from "react";
 import { useState } from "react";
+import { IconType } from "react-icons";
 import { HiExclamationCircle } from "react-icons/hi";
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
@@ -13,6 +14,8 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
   touched?: boolean;
   className?: string;
   error?: string;
+  Icon?: IconType;
+  iconStylingClasses?: string;
 }
 
 const InputField: React.FC<Props> = ({
@@ -20,6 +23,8 @@ const InputField: React.FC<Props> = ({
   labelForSR,
   className,
   onBlur,
+  Icon,
+  iconStylingClasses,
   error,
   touched,
   ...rest
@@ -27,7 +32,7 @@ const InputField: React.FC<Props> = ({
   const [isFocussed, setIsFocussed] = useState<boolean>(false);
   const [showToolTip, setShowToolTip] = useState<boolean>(false);
   return (
-    <div>
+    <>
       <div
         className={
           (isFocussed ? "border-auth-primary " : "border-gray-200 ") +
@@ -40,6 +45,7 @@ const InputField: React.FC<Props> = ({
           </label>
         )}
         {children}
+        {Icon && <Icon className={iconStylingClasses}></Icon>}
         <input
           {...rest}
           className={
@@ -71,7 +77,10 @@ const InputField: React.FC<Props> = ({
               setShowToolTip(() => false);
             }}
           >
-            <HiExclamationCircle className="inline w-5 h-5 m-1 text-auth-primary animate-bounce"></HiExclamationCircle>
+            <HiExclamationCircle
+              className="inline w-5 h-5 m-1 text-auth-primary animate-bounce"
+              aria-hidden="true"
+            ></HiExclamationCircle>
             <span
               className={
                 (showToolTip ? "sm:visible" : "invisible") +
@@ -88,12 +97,13 @@ const InputField: React.FC<Props> = ({
           {error}
         </span>
       )}
-    </div>
+    </>
   );
 };
 
 InputField.defaultProps = {
   required: false,
+  iconStylingClasses: "",
 };
 
 export default React.memo(InputField);
