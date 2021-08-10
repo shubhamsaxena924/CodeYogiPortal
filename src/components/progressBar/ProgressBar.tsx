@@ -18,10 +18,10 @@ const ProgressBar: React.FC<Props> = ({
   theme,
 }) => {
   if (percentage < 0) {
-    console.log("Warning! Percentage value less than 0!");
+    console.error("Warning! Percentage value less than 0!");
     percentage = 0;
   } else if (percentage > 100) {
-    console.log("Warning! Percentage value greater than 100!");
+    console.error("Warning! Percentage value greater than 100!");
     percentage = 100;
   }
   let sizeClass: string = "";

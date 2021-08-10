@@ -7,6 +7,7 @@ import CheckBox from "../components/checkbox/CheckBox";
 import ToggleSwitch from "../components/toggleSwitch/ToggleSwitch";
 import { useFormik } from "formik";
 import { ImSpinner9 } from "react-icons/im";
+import { login } from "../api/login.api";
 
 interface Props {}
 
@@ -68,10 +69,10 @@ const LoginPage: React.FC<Props> = (props) => {
     }),
     onSubmit: (data) => {
       console.log("loading...", data);
-      setTimeout(() => {
-        console.log("Logged In");
+      login(data).then((userObject) => {
+        console.log(userObject);
         history.push("/dashboard");
-      }, 2000);
+      });
     },
   });
 

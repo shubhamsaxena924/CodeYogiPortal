@@ -1,8 +1,15 @@
 import React from "react";
+import { useEffect } from "react";
+import { fetchGroups } from "../api/groups.api";
+import { logout } from "../api/login.api";
+import Button from "../components/button/Button";
 
 interface Props {}
 
 const AppContainer: React.FC<Props> = (props) => {
+  useEffect(() => {
+    fetchGroups({ status: "all-groups" });
+  }, []);
   return (
     <>
       <div className="fixed top-0 bottom-0 left-0 z-20 flex flex-col items-center justify-start w-16 rounded-tr-lg filter drop-shadow-xl bg-app-primary">
@@ -270,6 +277,13 @@ const AppContainer: React.FC<Props> = (props) => {
             </defs>
           </svg>
         </a>
+        <Button
+          buttonText="LogOut"
+          onClick={logout}
+          buttonStyle="outlined"
+          type="button"
+          className="w-full"
+        ></Button>
       </div>
       <div className="sticky top-0 left-0 right-0 z-0 flex items-center h-16 pl-20 text-lg bg-app-light-gray">
         Dashboard

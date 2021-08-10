@@ -68,18 +68,17 @@ const Button: React.FC<Props> = ({
       }
       break;
   }
-  console.log(theme, themeClasses);
   return (
     <button
       {...rest}
       className={
-        "flex-shrink-0 px-5 inline-block text-sm  duration-500 transform hover:-translate-y-1 rounded disabled:opacity-50 disabled:cursor-not-allowed " +
+        "flex-shrink-0 flex px-5 text-sm  duration-500 transform hover:-translate-y-1 rounded disabled:opacity-50 disabled:cursor-not-allowed " +
         themeClasses +
         " " +
         className
       }
     >
-      <div className="flex items-center justify-between w-full my-2">
+      <div className="flex items-center w-full my-2 justify-evenly">
         {Icon && <Icon className={iconStylingClasses}></Icon>}
         {buttonText}
       </div>
