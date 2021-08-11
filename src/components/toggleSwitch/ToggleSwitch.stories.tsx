@@ -27,4 +27,5 @@ export const Toggle = (args: any) => {
 Toggle.args = {
   title: "Show Password",
   className: "",
+  theme: "primary",
 };

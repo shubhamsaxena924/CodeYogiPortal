@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const LOGIN_TOKEN_KEY = "login_token";
 
-interface LoginData {
+interface LoginRequest {
   email: string;
   password: string;
 }
@@ -61,7 +61,7 @@ interface User {
 
 export const BASE_URL = "https://api-dev.domecompass.com";
 
-export const login = (data: LoginData) => {
+export const login = (data: LoginRequest) => {
   const url = BASE_URL + "/login";
   console.log(data);
 

@@ -4,7 +4,7 @@ import { IconType } from "react-icons";
 interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
   Icon?: IconType;
   iconStylingClasses?: string;
-  buttonText: string;
+  buttonText?: string;
   type: "submit" | "reset" | "button";
   theme?: "primary" | "secondary" | "dark";
   buttonStyle?: "solid" | "outlined" | "default";
@@ -17,6 +17,7 @@ const Button: React.FC<Props> = ({
   iconStylingClasses,
   className,
   theme,
+  children,
   ...rest
 }) => {
   let themeClasses: string = "";
@@ -81,6 +82,7 @@ const Button: React.FC<Props> = ({
       <div className="flex items-center w-full my-2 justify-evenly">
         {Icon && <Icon className={iconStylingClasses}></Icon>}
         {buttonText}
+        {children}
       </div>
     </button>
   );

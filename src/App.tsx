@@ -19,10 +19,9 @@ const App: React.FC<Props> = (props) => {
             )}
           </Route>
           <Route path={["/login", "/signup"]} exact>
-            <AuthPage></AuthPage>
+            <AuthPage />
           </Route>
-          <Route path="/dashboard">
-            {/* Add code to check whether valid token is there */}
+          <Route path={["/dashboard", "/groups", "/recordings"]} exact>
             <AppContainerPage />
           </Route>
         </Switch>

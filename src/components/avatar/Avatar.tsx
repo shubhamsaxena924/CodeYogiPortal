@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 export interface Props {
-  imageSrc: string;
+  imageSrc?: string;
   alt?: string;
   className?: string;
   size?: "sm" | "md" | "lg" | "xl";
@@ -44,7 +44,6 @@ const Avatar: React.FC<Props> = ({
       break;
     }
   }
-  console.log(name, name?.charAt(0));
   return (
     <div>
       <div
@@ -57,7 +56,7 @@ const Avatar: React.FC<Props> = ({
           sizeClass
         }
       >
-        {isError ? (
+        {isError || !imageSrc ? (
           <span
             className={
               className +

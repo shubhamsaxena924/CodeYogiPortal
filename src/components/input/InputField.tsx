@@ -49,7 +49,7 @@ const InputField: React.FC<Props> = ({
         <input
           {...rest}
           className={
-            "w-full p-0 pb-3 placeholder-gray-300 border-0 outline-none focus:ring-0 " +
+            "w-full p-0 pb-3 placeholder-gray-300 bg-transparent border-0 outline-none focus:ring-0 " +
             className
           }
           onClick={() => setIsFocussed(() => true)}
