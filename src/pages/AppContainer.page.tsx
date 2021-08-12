@@ -1,10 +1,15 @@
 import React from "react";
 import { Route, useHistory } from "react-router-dom";
-import DashboardPage from "./Dashboard.page";
-import GroupsPage from "./Groups.page";
+// import DashboardPage from "./Dashboard.page";
+// import GroupsPage from "./Groups.page";
+// import RecordingsPage from "./Recordings.page";
 import { useState } from "react";
 import TopNav from "../components/topNav/TopNav";
 import SideNav from "../components/sideNav/SideNav";
+
+const DashboardPage = React.lazy(() => import("./Dashboard.page"));
+const GroupsPage = React.lazy(() => import("./Groups.page"));
+const RecordingsPage = React.lazy(() => import("./Recordings.page"));
 
 interface Props {}
 
@@ -28,7 +33,7 @@ const AppContainerPage: React.FC<Props> = (props) => {
           <GroupsPage />
         </Route>
         <Route path="/recordings">
-          <GroupsPage />
+          <RecordingsPage />
         </Route>
       </div>
     </>

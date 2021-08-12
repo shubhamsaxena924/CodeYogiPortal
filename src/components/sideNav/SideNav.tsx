@@ -1,7 +1,6 @@
 import React, { SetStateAction } from "react";
 import { FiHome, FiPlay, FiUsers } from "react-icons/fi";
 import { logout } from "../../api/login.api";
-import Button from "../button/Button";
 import SideNavLink from "../sideNavLink/SideNavLink";
 
 interface Props {
@@ -286,6 +285,7 @@ const SideNav: React.FC<Props> = ({ setTitle }) => {
                   setTitle(() => "Dashboard");
                 }}
                 to="/dashboard"
+                name="Dashboard"
               ></SideNavLink>
             </li>
             <li>
@@ -295,6 +295,7 @@ const SideNav: React.FC<Props> = ({ setTitle }) => {
                   setTitle(() => "Groups");
                 }}
                 to="/groups"
+                name="Groups"
               ></SideNavLink>
             </li>
             <li>
@@ -304,18 +305,18 @@ const SideNav: React.FC<Props> = ({ setTitle }) => {
                   setTitle(() => "Recordings");
                 }}
                 to="/recordings"
+                name="Recordings"
               ></SideNavLink>
             </li>
           </ul>
         </div>
         {/* Sidebar Bottom Actions */}
-        <Button
-          buttonText="LogOut"
+        <div
           onClick={logout}
-          buttonStyle="outlined"
-          type="button"
-          className="w-full"
-        ></Button>
+          className="my-8 text-white cursor-pointer text-opacity-80 hover:text-opacity-100"
+        >
+          LogOut
+        </div>
       </div>
     </>
   );

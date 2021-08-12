@@ -36,7 +36,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
         <span
           className={
             (isTile ? "hidden " : "hidden md:flex ") +
-            " items-center justify-center flex-shrink-0 w-28 h-28 md:w-32 md:h-32 lg:w-40 lg:h-40  text-3xl text-white rounded-l-lg" +
+            " items-center justify-center flex-shrink-0 w-24 h-28 lg:w-32 lg:h-32 xl:w-40 xl:h-40  text-3xl text-white rounded-l-lg" +
             themeClasses
           }
         >
@@ -47,7 +47,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
         <img
           className={
             (isTile ? "hidden " : "hidden md:flex ") +
-            " items-center justify-center flex-shrink-0 object-cover w-28 h-28 lg:w-32 lg:h-32 xl:w-40 xl:h-40 rounded-l-lg "
+            " items-center justify-center flex-shrink-0 object-cover w-24 h-28 lg:w-32 lg:h-32 xl:w-40 xl:h-40 rounded-l-lg "
           }
           onError={() => setIsError(() => true)}
           src={props.imageSrc}
@@ -74,7 +74,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
           (isTile
             ? "inline-block sm:flex w-full "
             : "md:inline-block sm:flex w-full md:w-48 lg:w-64 ") +
-          " items-center justify-between p-4 "
+          " items-center justify-between p-2 "
         }
       >
         <h2

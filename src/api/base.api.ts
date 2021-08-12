@@ -1,5 +1,9 @@
 import axios from "axios";
-import { LOGIN_TOKEN_KEY, logout } from "./login.api";
+import { logout } from "./login.api";
+
+export const BASE_URL = "https://api-dev.domecompass.com";
+export const LOGIN_TOKEN_KEY = "auth_token";
+
 export const tokenInterceptor = () =>
   axios.interceptors.request.use((config) => {
     const token = localStorage.getItem(LOGIN_TOKEN_KEY);

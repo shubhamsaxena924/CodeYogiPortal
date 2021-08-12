@@ -7,7 +7,7 @@ export default {
 
 export const DefaultAlert = (args: any) => <Alert {...args}></Alert>;
 DefaultAlert.args = {
-  alertText: "Default! Lorem Ipsum is simply dummy text of the printing.",
+  alertText: "Default! This alert has a timeout of 5 secs. You can change it.",
   theme: "primary",
   alertStyle: "default",
   className: "font-josefin pl-4 py-3 rounded-md",
@@ -16,7 +16,7 @@ DefaultAlert.args = {
 
 export const OutlinedAlert = (args: any) => <Alert {...args}></Alert>;
 OutlinedAlert.args = {
-  alertText: "Outlined! Lorem Ipsum is simply dummy text of the printing.",
+  alertText: "Outlined! This alert has a timeout of 5 secs. You can change it.",
   theme: "primary",
   alertStyle: "outlined",
   className: "font-josefin pl-4 py-3 rounded-md",
@@ -25,7 +25,7 @@ OutlinedAlert.args = {
 
 export const SolidAlert = (args: any) => <Alert {...args}></Alert>;
 SolidAlert.args = {
-  alertText: "Solid! Lorem Ipsum is simply dummy text of the printing.",
+  alertText: "Solid! This alert has a timeout of 5 secs. You can change it.",
   theme: "primary",
   alertStyle: "solid",
   className: "font-josefin pl-4 py-3 rounded-md",

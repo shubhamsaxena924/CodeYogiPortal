@@ -1,17 +1,18 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { FiList, FiSearch, FiServer } from "react-icons/fi";
-import { fetchGroups, GroupResponseData } from "../api/groups.api";
+import { fetchGroups } from "../api/groups.api";
 import Button from "../components/button/Button";
 import InputField from "../components/input/InputField";
 import ListCard from "../components/listTile/ListCard";
 import ToggleSwitch from "../components/toggleSwitch/ToggleSwitch";
+import { Group } from "../models/Group";
 
 interface Props {}
 
 const GroupsPage: React.FC<Props> = (props) => {
   const [typeSearch, setTypeSearch] = useState(true);
-  const [groups, setGroups] = useState<GroupResponseData[]>([]);
+  const [groups, setGroups] = useState<Group[]>([]);
   const [query, setQuery] = useState("");
   const [isTile, setIsTile] = useState(false);
   let queryValue: string;

@@ -34,7 +34,32 @@
   </head>
   <body class="font-josefin">
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root">
+      <div
+        style="
+          background-color: #4361ee;
+          position: absolute;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          top: 50%;
+          width: 2rem;
+          height: 2rem;
+          border-radius: 999999px;
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        "
+      ></div>
+    </div>
+    <style>
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+    </style>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
