@@ -27,7 +27,7 @@ const SideNavLink: React.FC<Props> = ({ Icon, to, handleClick, name }) => {
       <span
         className={
           (showToolTip ? "sm:visible" : "invisible") +
-          " absolute text-center py-1 px-2 rounded-xl rounded-bl-none text-white font-light bg-auth-primary "
+          " absolute left-12 bottom-3 text-xs text-center py-1 px-2 rounded-xl rounded-bl-none text-white bg-gray-900 "
         }
       >
         {name}

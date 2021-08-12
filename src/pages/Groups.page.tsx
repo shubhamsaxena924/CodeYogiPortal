@@ -15,14 +15,19 @@ const GroupsPage: React.FC<Props> = (props) => {
   const [groups, setGroups] = useState<Group[]>([]);
   const [query, setQuery] = useState("");
   const [isTile, setIsTile] = useState(false);
+  let isLoading = true;
   let queryValue: string;
   useEffect(() => {
+    isLoading = true; //eslint-disable-line react-hooks/exhaustive-deps
     fetchGroups({
       status: "all-groups",
       limit: 100,
       query: query,
       offset: 0,
-    }).then((groups) => setGroups(() => groups));
+    }).then((groups) => {
+      isLoading = false;
+      setGroups(() => groups);
+    });
   }, [query]);
   return (
     <div className="text-center pl-14">
@@ -81,11 +86,15 @@ const GroupsPage: React.FC<Props> = (props) => {
         </span>
       </form>
       <div className="flex flex-wrap justify-center pt-10 mx-10">
+        {isLoading ? (
+          <div className="absolute w-8 h-8 transform -translate-x-1/2 -translate-y-1/2 rounded-full bg-auth-primary left-1/2 top-1/2 animate-pulse"></div>
+        ) : (
+          <></>
+        )}
         {groups.map((group, index) => (
           <ListCard
             key={index}
-            groupName={group.name}
-            desc={group.description}
+            group={group}
             imageSrc={group.group_image_url}
             imageAlt={group.name}
             isTile={isTile}

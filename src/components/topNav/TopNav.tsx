@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 interface Props {
   title: string;
@@ -11,7 +11,7 @@ const TopNav: React.FC<Props> = ({ title, isScrolling }) => {
       <div
         className={
           (isScrolling ? "drop-shadow-sm bg-white " : "bg-app-light-gray ") +
-          " sticky top-0 left-0 right-0 z-10 flex items-center h-16 pl-20 text-xl  filter "
+          " sticky top-0 left-0 right-0 z-10 flex items-center justify-between h-16 pl-20 text-xl  filter "
         }
       >
         <span className="capitalize">{title}</span>

@@ -5,7 +5,7 @@ interface Props {}
 const RecordingsPage: React.FC<Props> = (props) => {
   return (
     <>
-      <div className="h-screen ml-20">Recordings</div>
+      <div className="h-screen p-4 ml-20">Recordings</div>
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React, { SetStateAction } from "react";
-import { FiHome, FiPlay, FiUsers } from "react-icons/fi";
+import { FiHome, FiLogOut, FiPlay, FiUsers } from "react-icons/fi";
 import { logout } from "../../api/login.api";
 import SideNavLink from "../sideNavLink/SideNavLink";
 
@@ -313,9 +313,10 @@ const SideNav: React.FC<Props> = ({ setTitle }) => {
         {/* Sidebar Bottom Actions */}
         <div
           onClick={logout}
-          className="my-8 text-white cursor-pointer text-opacity-80 hover:text-opacity-100"
+          className="flex flex-col items-center my-4 text-xs text-center text-white cursor-pointer text-opacity-80 hover:text-opacity-100"
         >
-          LogOut
+          <FiLogOut className="w-5 h-5 mb-2 " />
+          Log Out
         </div>
       </div>
     </>

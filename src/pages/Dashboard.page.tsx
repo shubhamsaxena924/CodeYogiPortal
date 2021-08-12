@@ -5,7 +5,7 @@ interface Props {}
 const DashboardPage: React.FC<Props> = (props) => {
   return (
     <>
-      <div className="h-screen ml-20">Dashboard</div>
+      <div className="h-screen p-4 ml-20">Dashboard</div>
     </>
   );
 };
