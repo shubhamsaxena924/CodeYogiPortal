@@ -29,6 +29,9 @@ const App: React.FC<Props> = (props) => {
             <Route path={["/dashboard", "/groups", "/recordings"]} exact>
               <AppContainerPage />
             </Route>
+            <Route>
+              <p className="p-4">Page not found. Check the URL!</p>
+            </Route>
           </Switch>
         </BrowserRouter>
       </Suspense>
