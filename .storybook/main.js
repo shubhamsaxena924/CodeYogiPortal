@@ -8,7 +8,7 @@ module.exports = {
   ],
   webpackFinal: async (config) => {
     config.module.rules.push({
-      test: /\,css&/,
+      test: /\.css&/,
       use: [
         {
           loader: "postcss-loader",
