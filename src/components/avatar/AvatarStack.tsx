@@ -27,31 +27,31 @@ const AvatarStack: React.FC<Props> = ({
             0,
             imageObjects.length > threshold ? threshold : imageObjects.length
           )
-          .map((imageObject, index) => (
-            <span
-              className={
-                (index === 0 ? "" : "right-" + overlapValue * index) +
-                " relative inline-block "
-              }
-            >
-              <Avatar
-                imageSrc={imageObject.imageSrc}
-                className={className}
-                alt={imageObject.alt}
-                name={imageObject.name}
-                size={size}
-                animate={animate}
-              ></Avatar>
-            </span>
-          ))}
+          .map((imageObject, index) => {
+            const rightValue = overlapValue * index;
+            return (
+              <span
+                className={" relative inline-block "}
+                style={{ right: rightValue / 4 + "rem" }}
+              >
+                <Avatar
+                  imageSrc={imageObject.imageSrc}
+                  className={className}
+                  alt={imageObject.alt}
+                  name={imageObject.name}
+                  size={size}
+                  animate={animate}
+                ></Avatar>
+              </span>
+            );
+          })}
         {more > 0 && (
           <span
             className={
-              "right-" +
-              overlapValue * threshold +
               " relative font-semibold bg-white rounded-full flex-shrink-0 transform hover:-translate-y-1 duration-300 shadow-lg font-josefin text-auth-primary " +
               (size === "xl" ? "text-base py-2 px-4 " : "text-sm py-1 px-2 ")
             }
+            style={{ right: (overlapValue * threshold) / 4 + "rem" }}
           >
             {"+" + more + " more"}
           </span>
