@@ -15,17 +15,17 @@ const GroupsPage: React.FC<Props> = (props) => {
   const [groups, setGroups] = useState<Group[]>([]);
   const [query, setQuery] = useState("");
   const [isTile, setIsTile] = useState(false);
-  let isLoading = true;
+  const [isLoading, setIsLoading] = useState(true);
   let queryValue: string;
   useEffect(() => {
-    isLoading = true; //eslint-disable-line react-hooks/exhaustive-deps
+    setIsLoading(true);
     fetchGroups({
       status: "all-groups",
       limit: 100,
       query: query,
       offset: 0,
     }).then((groups) => {
-      isLoading = false;
+      setIsLoading(false);
       setGroups(() => groups);
     });
   }, [query]);
