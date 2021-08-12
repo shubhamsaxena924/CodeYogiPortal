@@ -15,15 +15,13 @@ interface Props {}
 
 const AppContainerPage: React.FC<Props> = (props) => {
   const history = useHistory();
-  const [isScrolling, setIsScrolling] = useState(true);
   const [title, setTitle] = useState(history.location.pathname.split("/")[1]);
-  console.log(isScrolling);
   return (
     <>
       {/* side nav */}
       <SideNav setTitle={setTitle} />
       {/* top bar */}
-      <TopNav title={title} isScrolling={isScrolling} />
+      <TopNav title={title} isScrolling={true} />
       {/* main body */}
       <div className="bg-app-light-gray">
         <Route path="/dashboard">
