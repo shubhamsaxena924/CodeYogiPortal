@@ -10,6 +10,7 @@
 
 # production
 /build
+/storybook-static
 
 # misc
 .DS_Store
@@ -22,43 +23,3 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 branchNames.md
-storybook-static/_redirects
-storybook-static/0.a9132a40.iframe.bundle.js
-storybook-static/0.b73eaee9a88f178d62ed.manager.bundle.js
-storybook-static/1.f296d183a17268696d73.manager.bundle.js
-storybook-static/4.bd9bcff4.iframe.bundle.js
-storybook-static/4.bd9bcff4.iframe.bundle.js.LICENSE.txt
-storybook-static/4.bd9bcff4.iframe.bundle.js.map
-storybook-static/5.1663a039.iframe.bundle.js
-storybook-static/5.fa71488e730c5c7f885f.manager.bundle.js
-storybook-static/5.fa71488e730c5c7f885f.manager.bundle.js.LICENSE.txt
-storybook-static/6.7fedf4f8.iframe.bundle.js
-storybook-static/6.7fedf4f8.iframe.bundle.js.LICENSE.txt
-storybook-static/6.7fedf4f8.iframe.bundle.js.map
-storybook-static/6.8096ae4aadde0743697b.manager.bundle.js
-storybook-static/7.24c7e3ef.iframe.bundle.js
-storybook-static/7.b34baecbd082bc7b188d.manager.bundle.js
-storybook-static/8.15577edffecf900a8de2.manager.bundle.js
-storybook-static/9.d7d85aa0a49a98f17218.manager.bundle.js
-storybook-static/10.9998ba67d65d81d20896.manager.bundle.js
-storybook-static/11.49c687eaa6261f8b7be2.manager.bundle.js
-storybook-static/11.49c687eaa6261f8b7be2.manager.bundle.js.LICENSE.txt
-storybook-static/12.c9538ed3766c96f289e7.manager.bundle.js
-storybook-static/asset-manifest.json
-storybook-static/favicon.ico
-storybook-static/iframe.html
-storybook-static/index.html
-storybook-static/logo192.png
-storybook-static/main.600d6c919d9f368542ae.manager.bundle.js
-storybook-static/main.d1323303.iframe.bundle.js
-storybook-static/manifest.json
-storybook-static/robots.txt
-storybook-static/runtime~main.2ad5fcf1.iframe.bundle.js
-storybook-static/runtime~main.909d038f912f063e8837.manager.bundle.js
-storybook-static/vendors~main.88c7a596.iframe.bundle.js
-storybook-static/vendors~main.88c7a596.iframe.bundle.js.LICENSE.txt
-storybook-static/vendors~main.88c7a596.iframe.bundle.js.map
-storybook-static/vendors~main.d3455eed64b243c89325.manager.bundle.js
-storybook-static/vendors~main.d3455eed64b243c89325.manager.bundle.js.LICENSE.txt
-storybook-static/static/css/main.a6b1053c.chunk.css
-storybook-static/static/css/main.a6b1053c.chunk.css.map
