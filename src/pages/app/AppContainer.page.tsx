@@ -9,23 +9,20 @@ import RecordingsLazy from "./Recordings.lazy";
 import { useState } from "react";
 import TopNav from "../../components/topNav/TopNav";
 import SideNav from "../../components/sideNav/SideNav";
-import { User } from "../../models/User";
 
-interface Props {
-  user: User;
-}
+interface Props {}
 
 const AppContainerPage: React.FC<Props> = (props) => {
   const history = useHistory();
   const [title, setTitle] = useState(history.location.pathname.split("/")[1]);
   return (
-    <>
+    <div className="min-h-screen bg-app-light-gray">
       {/* side nav */}
       <SideNav setTitle={setTitle} />
       {/* top bar */}
       <TopNav title={title} isScrolling={true} />
       {/* main body */}
-      <div className="bg-app-light-gray">
+      <div>
         <Route path="/dashboard">
           <DashboardLazy />
         </Route>
@@ -36,7 +33,7 @@ const AppContainerPage: React.FC<Props> = (props) => {
           <RecordingsLazy />
         </Route>
       </div>
-    </>
+    </div>
   );
 };
 

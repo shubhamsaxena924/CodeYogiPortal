@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Button from "../../components/button/Button";
 import InputField from "../../components/input/InputField";
@@ -88,6 +88,12 @@ const SignUpPage: React.FC<Props> = (props) => {
     isValid,
     errors,
   ]);
+
+  // useMemo
+  const toggleHandlerMemo = useMemo(
+    () => ({ isOn: showPassword, setSwitch: setShowPassword }),
+    [showPassword]
+  );
 
   return (
     <div className="flex flex-col justify-center max-w-md mx-auto">
@@ -195,7 +201,7 @@ const SignUpPage: React.FC<Props> = (props) => {
         <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
           <ToggleSwitch
             title="Show Password"
-            toggleHandler={{ isOn: showPassword, setSwitch: setShowPassword }}
+            toggleHandler={toggleHandlerMemo}
           />
           <Button
             type="submit"

@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Route } from "react-router-dom";
-import { User } from "../../models/User";
 
 import LoginPage from "./Login.page";
 import SignUpPage from "./SignUp.page";
 
-interface Props {
-  onLogin: (user: User)=> void;
-}
+interface Props {}
 
 const AuthPage: React.FC<Props> = (props) => {
   const [isOpening, setIsOpening] = useState<boolean>(false);
@@ -27,7 +24,7 @@ const AuthPage: React.FC<Props> = (props) => {
       >
         <div className="flex items-center justify-center flex-1 py-16 text-gray-700">
           <Route path="/login">
-            <LoginPage onLogin={props.onLogin}/>
+            <LoginPage />
           </Route>
           <Route path="/signup">
             <SignUpPage />

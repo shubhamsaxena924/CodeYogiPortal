@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useState } from "react";
 import { FiList, FiSearch, FiServer } from "react-icons/fi";
 import { fetchGroups } from "../../api/groups.api";
@@ -16,7 +16,7 @@ const GroupsPage: React.FC<Props> = (props) => {
   const [query, setQuery] = useState("");
   const [isTile, setIsTile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  let queryValue: string;
+  const [queryOnSubmit, setQueryOnSubmit] = useState("");
   useEffect(() => {
     setIsLoading(true);
     fetchGroups({
@@ -29,14 +29,27 @@ const GroupsPage: React.FC<Props> = (props) => {
       setGroups(() => groups);
     });
   }, [query]);
+
+  // useMemos
+  const toggleHandlerMemo = useMemo(
+    () => ({ isOn: typeSearch, setSwitch: setTypeSearch }),
+    [typeSearch]
+  );
+  const submitHandlerMemo = useMemo(() => {
+    return (event: any) => {
+      event.preventDefault();
+      setQuery(() => queryOnSubmit);
+    };
+  }, [queryOnSubmit]);
+  const tileButtonHandlerMemo = useMemo(() => {
+    return () => setIsTile((value) => !value);
+  }, []);
+
   return (
     <div className="text-center pl-14">
       <form
         className="block pt-10 mx-10 text-center"
-        onSubmit={(event) => {
-          event.preventDefault();
-          setQuery(() => queryValue);
-        }}
+        onSubmit={submitHandlerMemo}
       >
         <InputField
           Icon={FiSearch}
@@ -47,7 +60,7 @@ const GroupsPage: React.FC<Props> = (props) => {
           onChange={(event) => {
             typeSearch
               ? setQuery(event.target.value)
-              : (queryValue = event.target.value);
+              : setQueryOnSubmit(event.target.value);
           }}
           className="w-full"
         ></InputField>
@@ -55,7 +68,7 @@ const GroupsPage: React.FC<Props> = (props) => {
           <div className="flex-1">
             <ToggleSwitch
               title="Search as you type"
-              toggleHandler={{ isOn: typeSearch, setSwitch: setTypeSearch }}
+              toggleHandler={toggleHandlerMemo}
               theme="primary"
             ></ToggleSwitch>
           </div>
@@ -79,17 +92,22 @@ const GroupsPage: React.FC<Props> = (props) => {
                 Icon={!isTile ? FiList : FiServer}
                 type="button"
                 theme="primary"
-                onClick={() => setIsTile((value) => !value)}
+                onClick={tileButtonHandlerMemo}
               ></Button>
             </span>
           </div>
         </span>
       </form>
+      {isLoading ? (
+        <div className="absolute z-50 w-8 h-8 transform translate-x-1/2 rounded-full left-1/2 bg-auth-primary animate-pulse"></div>
+      ) : (
+        <></>
+      )}
       <div className="flex flex-wrap justify-center pt-10 mx-10">
-        {isLoading ? (
-          <div className="absolute w-8 h-8 transform -translate-x-1/2 -translate-y-1/2 rounded-full bg-auth-primary left-1/2 top-1/2 animate-pulse"></div>
+        {groups.length === 0 && queryOnSubmit ? (
+          <p className="w-full text-center">No Results Found!</p>
         ) : (
-          <></>
+          ""
         )}
         {groups.map((group, index) => (
           <ListCard

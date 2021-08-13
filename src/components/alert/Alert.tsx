@@ -1,5 +1,6 @@
 import { Transition } from "@headlessui/react";
 import React, { Fragment, useState } from "react";
+import { useMemo } from "react";
 import { MdCancel } from "react-icons/md";
 
 interface Props {
@@ -69,28 +70,35 @@ const Alert: React.FC<Props> = ({
   setTimeout(() => {
     setIsVisible(false);
   }, timeOutMS);
+
+  // useMemos
+  const alertCloseHandlerMemo = useMemo(() => {
+    return () => {
+      setIsVisible(() => false);
+    };
+  }, []);
+
   return (
     <Transition
       show={isVisible}
       as={Fragment}
-      enter="Transition-transform duration-700"
+      enter="transition-transform duration-700"
       enterFrom="translate-x-full"
       enterTo="-translate-x-10"
       entered="translate-x-0"
+      leave="transition-transform duration-700"
+      leaveFrom="-translate-x-10"
+      leaveTo="translate-x-full"
     >
       <div
         className={
           themeClasses +
-          " flex  transform  justify-between items-center p-2 " +
+          " flex absolute z-50 w-full transform justify-between items-center p-2 " +
           className
         }
       >
         <span>{alertText}</span>
-        <button
-          onClick={() => {
-            setIsVisible(() => false);
-          }}
-        >
+        <button onClick={alertCloseHandlerMemo}>
           <MdCancel className="w-5 h-5"></MdCancel>
         </button>
       </div>

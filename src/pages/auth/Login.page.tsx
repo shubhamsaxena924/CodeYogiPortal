@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Button from "../../components/button/Button";
 import InputField from "../../components/input/InputField";
@@ -8,16 +8,16 @@ import ToggleSwitch from "../../components/toggleSwitch/ToggleSwitch";
 import { useFormik } from "formik";
 import { ImSpinner9 } from "react-icons/im";
 import { login } from "../../api/login.api";
-import { User } from "../../models/User";
+import { useContext } from "react";
+import AppContext from "../../App.context";
 
-interface Props {
-  onLogin: (user: User) => void;
-}
+interface Props {}
 
 const LoginPage: React.FC<Props> = (props) => {
   const history = useHistory();
   const [keepLoggedIn, setKeepLoggedIn] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const { setUser } = useContext(AppContext);
 
   // Manual Way (Formik does this all on its own)
   // const [loginData, setLoginData] = useState({
@@ -74,6 +74,7 @@ const LoginPage: React.FC<Props> = (props) => {
       console.log("loading...", data);
       login(data).then((userObject) => {
         console.log(userObject);
+        setUser(userObject);
         history.push("/dashboard");
       });
     },
@@ -90,6 +91,15 @@ const LoginPage: React.FC<Props> = (props) => {
       ),
     [values, isValid, keepLoggedIn, errors]
   );
+
+  // useMemos
+  const toggleHandlerMemo = useMemo(
+    () => ({ isOn: showPassword, setSwitch: setShowPassword }),
+    [showPassword]
+  );
+  const checkBoxMemo = useMemo(() => {
+    return () => setKeepLoggedIn((value) => !value);
+  }, []);
 
   return (
     <div className="flex flex-col justify-center w-full max-w-md mx-auto font-josefin">
@@ -164,7 +174,7 @@ const LoginPage: React.FC<Props> = (props) => {
         <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
           <ToggleSwitch
             title="Show Password"
-            toggleHandler={{ isOn: showPassword, setSwitch: setShowPassword }}
+            toggleHandler={toggleHandlerMemo}
           />
           <Button
             type="submit"
@@ -182,9 +192,7 @@ const LoginPage: React.FC<Props> = (props) => {
             name={possibleKeys.keepMeLoggedIn}
             checked={keepLoggedIn}
             label="Keep me logged in"
-            onChange={() => {
-              setKeepLoggedIn((value) => !value);
-            }}
+            onChange={checkBoxMemo}
           />
         </div>
         <Link
