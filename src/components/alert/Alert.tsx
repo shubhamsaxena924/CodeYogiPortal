@@ -93,7 +93,7 @@ const Alert: React.FC<Props> = ({
       <div
         className={
           themeClasses +
-          " flex absolute z-50 w-full transform justify-between items-center p-2 " +
+          " flex absolute z-50 transform justify-between items-center p-2 " +
           className
         }
       >

@@ -10,7 +10,7 @@ DefaultAlert.args = {
   alertText: "Default! This alert has a timeout of 5 secs. You can change it.",
   theme: "primary",
   alertStyle: "default",
-  className: "font-josefin pl-4 py-3 rounded-md",
+  className: "font-josefin pl-4 w-11/12 py-3 rounded-md",
   timeOutMS: 5000,
 };
 
@@ -19,7 +19,7 @@ OutlinedAlert.args = {
   alertText: "Outlined! This alert has a timeout of 5 secs. You can change it.",
   theme: "primary",
   alertStyle: "outlined",
-  className: "font-josefin pl-4 py-3 rounded-md",
+  className: "font-josefin pl-4 w-11/12 py-3 rounded-md",
   timeOutMS: 5000,
 };
 
@@ -28,6 +28,6 @@ SolidAlert.args = {
   alertText: "Solid! This alert has a timeout of 5 secs. You can change it.",
   theme: "primary",
   alertStyle: "solid",
-  className: "font-josefin pl-4 py-3 rounded-md",
+  className: "font-josefin pl-4 py-3 w-11/12 rounded-md",
   timeOutMS: 5000,
 };
