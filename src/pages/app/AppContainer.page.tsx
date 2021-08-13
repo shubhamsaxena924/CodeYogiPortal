@@ -3,15 +3,17 @@ import { Route, useHistory } from "react-router-dom";
 // import DashboardPage from "./Dashboard.page";
 // import GroupsPage from "./Groups.page";
 // import RecordingsPage from "./Recordings.page";
+import DashboardLazy from "./Dashboard.lazy";
+import GroupsLazy from "./Groups.lazy";
+import RecordingsLazy from "./Recordings.lazy";
 import { useState } from "react";
-import TopNav from "../components/topNav/TopNav";
-import SideNav from "../components/sideNav/SideNav";
+import TopNav from "../../components/topNav/TopNav";
+import SideNav from "../../components/sideNav/SideNav";
+import { User } from "../../models/User";
 
-const DashboardPage = React.lazy(() => import("./Dashboard.page"));
-const GroupsPage = React.lazy(() => import("./Groups.page"));
-const RecordingsPage = React.lazy(() => import("./Recordings.page"));
-
-interface Props {}
+interface Props {
+  user: User;
+}
 
 const AppContainerPage: React.FC<Props> = (props) => {
   const history = useHistory();
@@ -25,13 +27,13 @@ const AppContainerPage: React.FC<Props> = (props) => {
       {/* main body */}
       <div className="bg-app-light-gray">
         <Route path="/dashboard">
-          <DashboardPage />
+          <DashboardLazy />
         </Route>
         <Route path="/groups">
-          <GroupsPage />
+          <GroupsLazy />
         </Route>
         <Route path="/recordings">
-          <RecordingsPage />
+          <RecordingsLazy />
         </Route>
       </div>
     </>

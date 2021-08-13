@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { FiList, FiSearch, FiServer } from "react-icons/fi";
-import { fetchGroups } from "../api/groups.api";
-import Button from "../components/button/Button";
-import InputField from "../components/input/InputField";
-import ListCard from "../components/listTile/ListCard";
-import ToggleSwitch from "../components/toggleSwitch/ToggleSwitch";
-import { Group } from "../models/Group";
+import { fetchGroups } from "../../api/groups.api";
+import Button from "../../components/button/Button";
+import InputField from "../../components/input/InputField";
+import ListCard from "../../components/listTile/ListCard";
+import ToggleSwitch from "../../components/toggleSwitch/ToggleSwitch";
+import { Group } from "../../models/Group";
 
 interface Props {}
 

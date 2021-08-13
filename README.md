@@ -14,4 +14,4 @@ Level 3: level 2 + Storybook (alerts, button, checkbox, input, toggleSwitch, pro
 
 ## level4
 
-Level 4: level 3 + Login API Integrated + Group API Listing and Querying (onChange & OnClick) + Organizing models and api files + SideNavBar tooltip added + Lazy Loading and Suspense added with loader
+Level 4: level 3 + Login API Integrated + Group API Listing and Querying (onChange & OnClick) + groups more info dialog + Organizing models and api files + SideNavBar tooltip added + Lazy Loading and Suspense added with loader + Lazy files

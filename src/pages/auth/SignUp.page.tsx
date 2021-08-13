@@ -1,127 +1,141 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import Button from "../components/button/Button";
-import InputField from "../components/input/InputField";
+import Button from "../../components/button/Button";
+import InputField from "../../components/input/InputField";
 import * as yup from "yup";
-import CheckBox from "../components/checkbox/CheckBox";
-import ToggleSwitch from "../components/toggleSwitch/ToggleSwitch";
+import CheckBox from "../../components/checkbox/CheckBox";
+import ToggleSwitch from "../../components/toggleSwitch/ToggleSwitch";
 import { useFormik } from "formik";
 import { ImSpinner9 } from "react-icons/im";
-import { login } from "../api/login.api";
 
 interface Props {}
 
-const LoginPage: React.FC<Props> = (props) => {
+const SignUpPage: React.FC<Props> = (props) => {
   const history = useHistory();
-  const [keepLoggedIn, setKeepLoggedIn] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-
-  // Manual Way (Formik does this all on its own)
-  // const [loginData, setLoginData] = useState({
+  enum possibleKeys {
+    username = "username",
+    email = "email",
+    password = "password",
+    isAgree = "isAgree",
+  }
+  //Manual Way
+  // const [signUpData, setSignUpData] = useState({
+  //   username: "",
   //   email: "",
   //   password: "",
-  //   keepMeLoggedIn: false,
+  //   isAgree: false,
   // });
-
-  // Handle Change
+  // const [touched, setTouched] = useState({
+  //   username: false,
+  //   email: false,
+  //   password: false,
+  // });
   // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   setLoginData({ ...loginData, [event.target.name]: event.target.value });
+  //   setSignUpData({ ...signUpData, [event.target.name]: event.target.value });
   // };
-  // Handle Blur
   // const handleBlur = (event: FocusEvent<HTMLInputElement>) => {
   //   setTouched({ ...touched, [event.target.name]: true });
   // };
-  // yup validator
-  // const loginDataValidator = yup.object().shape({
+  // const signUpDataValidator = yup.object().shape({
+  //   username: yup.string().required().min(5),
   //   email: yup.string().email().required(),
-  //   password: yup.string().required().min(8),
+  //   password: yup.string().min(8).required(),
+  //   isAgree: yup.boolean().isTrue(),
   // });
-  // console.log(loginDataValidator.isValidSync(loginData));
-  // const getError = (key: "email" | "password") => {
-  //   if (touched[key] && !loginData[key]) {
+  // console.log(signUpDataValidator.isValidSync(signUpData));
+  // const getError = (key: "email" | "password" | "username") => {
+  //   if (touched[key] && !signUpData[key]) {
   //     return "This is a required field!";
   //   }
   // };
 
-  enum possibleKeys {
-    email = "email",
-    password = "password",
-    keepMeLoggedIn = "keepMeLoggedIn",
-  }
-
-  //formik way
+  //Formik way
   const {
-    values,
-    isValid,
-    errors,
     getFieldProps,
+    errors,
     touched,
+    isValid,
+    values,
     handleSubmit,
     isSubmitting,
   } = useFormik({
     initialValues: {
       email: "",
       password: "",
+      username: "",
+      isAgree: false,
     },
     validationSchema: yup.object().shape({
       email: yup.string().email().required(),
-      password: yup.string().required().min(8),
+      password: yup.string().min(8).required(),
+      username: yup.string().min(5).required(),
+      isAgree: yup
+        .boolean()
+        .isTrue("you must agree to the terms and conditions to proceed"),
     }),
     onSubmit: (data) => {
       console.log("loading...", data);
-      login(data).then((userObject) => {
-        console.log(userObject);
+      setTimeout(() => {
+        console.log("Account created...");
         history.push("/dashboard");
-      });
+      }, 2000);
     },
   });
 
-  useEffect(
-    () =>
-      console.log(
-        values,
-        "isValid? " + isValid,
-        "keepLoggedIn? " + keepLoggedIn,
-        "\n",
-        errors
-      ),
-    [values, isValid, keepLoggedIn, errors]
-  );
+  useEffect(() => console.log(values, "isValid? " + isValid, "\n", errors), [
+    values,
+    isValid,
+    errors,
+  ]);
 
   return (
-    <div className="flex flex-col justify-center w-full max-w-md mx-auto font-josefin">
+    <div className="flex flex-col justify-center max-w-md mx-auto">
       <div className="mx-5">
         <h1 className="text-3xl lg:text-4xl">
-          Log In to{" "}
-          <a
-            className="font-semibold text-auth-primary"
-            href="https://codeyogi.io"
-            target="_blank"
-            rel="noreferrer"
-          >
-            CODEYOGI
-          </a>
+          Get started by creating an account
         </h1>
-        <p className="mt-2 mb-6 md:mb-14">
-          New Here?{" "}
+        <p className="mt-2 mb-6 md:mb-8">
+          Already have an account?{" "}
           <Link
-            to="/signup"
+            to="/login"
             className="underline text-auth-primary hover:no-underline"
           >
-            Create an account
+            Log in
           </Link>
         </p>
       </div>
       <form
-        className="flex flex-col py-4 mx-5 space-y-10 md:space-y-12"
+        className="flex flex-col py-4 mx-5 space-y-10 md:space-y-8"
         onSubmit={handleSubmit}
       >
         <InputField
           type="text"
+          placeholder="Username"
+          id="username"
+          required
+          {...getFieldProps(possibleKeys.username)}
+          autoComplete="username"
+          error={errors.username}
+          touched={touched.username}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="rgba(27, 85, 226, 0.23921568627450981)"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="w-6 h-6 mb-4 mr-2 stroke-current stroke-2 text-auth-primary"
+          >
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </InputField>
+        <InputField
+          type="text"
           placeholder="Email ID"
+          required
           id="email"
           {...getFieldProps(possibleKeys.email)}
-          required
           autoComplete="email"
           error={errors.email}
           touched={touched.email}
@@ -141,9 +155,9 @@ const LoginPage: React.FC<Props> = (props) => {
           type={showPassword ? "text" : "password"}
           placeholder="Password"
           id="password"
-          autoComplete="current-password"
           {...getFieldProps(possibleKeys.password)}
           required
+          autoComplete="new-password"
           error={errors.password}
           touched={touched.password}
         >
@@ -158,6 +172,26 @@ const LoginPage: React.FC<Props> = (props) => {
             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
           </svg>
         </InputField>
+        <div className="flex justify-start">
+          <CheckBox
+            id="isAgree"
+            // name={possibleKeys.isAgree}
+            {...getFieldProps(possibleKeys.isAgree)}
+            label={
+              <>
+                I agree to the{" "}
+                <Link to="#" className="text-auth-primary">
+                  terms and conditions
+                </Link>
+              </>
+            }
+            required
+            // checked={signUpData.isAgree}
+            // onChange={() => {
+            //   setSignUpData((obj) => ({ ...obj, isAgree: !obj.isAgree }));
+            // }}
+          />
+        </div>
         <div className="flex flex-col items-center justify-between space-y-4 sm:flex-row sm:space-y-0">
           <ToggleSwitch
             title="Show Password"
@@ -166,31 +200,14 @@ const LoginPage: React.FC<Props> = (props) => {
           <Button
             type="submit"
             disabled={!isValid}
-            buttonText="Login"
+            buttonText="Get Started!"
             Icon={ImSpinner9}
             iconStylingClasses={
               (isSubmitting ? "block " : "hidden ") + " animate-spin mr-2"
             }
           />
         </div>
-        <div className="flex justify-center">
-          <CheckBox
-            id="keepLogged"
-            name={possibleKeys.keepMeLoggedIn}
-            checked={keepLoggedIn}
-            label="Keep me logged in"
-            onChange={() => {
-              setKeepLoggedIn((value) => !value);
-            }}
-          />
-        </div>
-        <Link
-          to="/pwrecovery"
-          className="self-center mt-5 text-lg font-medium text-auth-primary"
-        >
-          Forgot Password?
-        </Link>
-        <p className="text-sm text-center">
+        <p className="pt-8 text-sm text-center">
           © 2021 All Rights Reserved.{" "}
           <Link to="#" className="text-auth-primary">
             Cookie Preferences
@@ -210,4 +227,4 @@ const LoginPage: React.FC<Props> = (props) => {
   );
 };
 
-export default React.memo(LoginPage);
+export default React.memo(SignUpPage);

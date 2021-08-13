@@ -1,12 +1,16 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import AppContainerPage from "./pages/AppContainer.page";
-import AuthPage from "./pages/Auth.page";
+import AppContainerLazy from "./pages/app/AppContainer.lazy";
+import AuthLazy from "./pages/auth/Auth.lazy";
 import { LOGIN_TOKEN_KEY } from "./api/base.api";
+import { User } from "./models/User";
 
 interface Props {}
+
 const token = localStorage.getItem(LOGIN_TOKEN_KEY);
 const App: React.FC<Props> = (props) => {
+  //this user object, will be be deleted if page is refreshed, and we only get this object when we login.
+  const [user, setUser] = useState<User>();
   return (
     <>
       <Suspense
@@ -24,10 +28,18 @@ const App: React.FC<Props> = (props) => {
               )}
             </Route>
             <Route path={["/login", "/signup"]} exact>
-              {token ? <Redirect to="/dashboard" /> : <AuthPage />}
+              {token ? (
+                <Redirect to="/dashboard" />
+              ) : (
+                <AuthLazy onLogin={setUser} />
+              )}
             </Route>
             <Route path={["/dashboard", "/groups", "/recordings"]} exact>
-              <AppContainerPage />
+              {token ? (
+                <AppContainerLazy user={user!} />
+              ) : (
+                <Redirect to="/login" />
+              )}
             </Route>
             <Route>
               <p className="p-4">Page not found. Check the URL!</p>
