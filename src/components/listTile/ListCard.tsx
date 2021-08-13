@@ -125,7 +125,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
             leaveFrom="opacity-100"
             leaveTo="opacity-0"
           >
-            <div className="fixed z-20 flex flex-col items-center self-center p-10 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md duration top-1/2 left-1/2 w-96">
+            <div className="fixed z-20 flex flex-col items-center self-center p-10 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md duration top-1/2 left-1/2 w-80 lg:w-96">
               <Avatar
                 imageSrc={props.imageSrc}
                 name={props.group.name}

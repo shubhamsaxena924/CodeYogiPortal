@@ -43,14 +43,9 @@ const InputField: React.FC<Props> = ({
       onBlur && onBlur(event);
     };
   }, [onBlur]);
-  const mouseEntryHandlerMemo = useMemo(() => {
-    return () => {
-      setShowToolTip((value) => !value);
-    };
-  }, []);
 
   return (
-    <>
+    <div className="relative">
       <div
         className={
           (isFocussed ? "border-auth-primary " : "border-gray-200 ") +
@@ -85,8 +80,12 @@ const InputField: React.FC<Props> = ({
         >
           <div
             className="flex items-center mt-1 text-sm transform "
-            onMouseEnter={mouseEntryHandlerMemo}
-            onMouseLeave={mouseEntryHandlerMemo}
+            onMouseEnter={() => {
+              setShowToolTip(() => true);
+            }}
+            onMouseLeave={() => {
+              setShowToolTip(() => false);
+            }}
           >
             <HiExclamationCircle
               className="inline w-5 h-5 m-1 text-auth-primary animate-bounce"
@@ -108,7 +107,7 @@ const InputField: React.FC<Props> = ({
           {error}
         </span>
       )}
-    </>
+    </div>
   );
 };
 
