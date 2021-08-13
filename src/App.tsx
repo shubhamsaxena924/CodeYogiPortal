@@ -7,8 +7,8 @@ import { User } from "./models/User";
 
 interface Props {}
 
-const token = localStorage.getItem(LOGIN_TOKEN_KEY);
 const App: React.FC<Props> = (props) => {
+  const token = localStorage.getItem(LOGIN_TOKEN_KEY);
   //this user object, will be be deleted if page is refreshed, and we only get this object when we login.
   const [user, setUser] = useState<User>();
   return (

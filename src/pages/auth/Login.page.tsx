@@ -74,6 +74,7 @@ const LoginPage: React.FC<Props> = (props) => {
       console.log("loading...", data);
       login(data).then((userObject) => {
         console.log(userObject);
+        props.onLogin(userObject);
         history.push("/dashboard");
       });
     },
