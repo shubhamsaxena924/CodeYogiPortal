@@ -58,9 +58,8 @@ const GroupsPage: React.FC<Props> = (props) => {
           type="text"
           name="Search"
           onChange={(event) => {
-            typeSearch
-              ? setQuery(event.target.value)
-              : setQueryOnSubmit(event.target.value);
+            setQueryOnSubmit(event.target.value);
+            typeSearch && setQuery(event.target.value);
           }}
           className="w-full"
         ></InputField>
@@ -104,7 +103,7 @@ const GroupsPage: React.FC<Props> = (props) => {
         <></>
       )}
       <div className="flex flex-wrap justify-center pt-10 mx-10">
-        {groups.length === 0 && queryOnSubmit ? (
+        {groups.length === 0 && query ? (
           <p className="w-full text-center">No Results Found!</p>
         ) : (
           ""
