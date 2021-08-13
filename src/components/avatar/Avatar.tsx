@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useMemo } from "react";
 
 export interface Props {
   imageSrc?: string;
@@ -44,6 +45,12 @@ const Avatar: React.FC<Props> = ({
       break;
     }
   }
+
+  //useMemos
+  const errorHandlerMemo = useMemo(() => {
+    return () => setIsError(() => true);
+  }, []);
+
   return (
     <div>
       <div
@@ -75,7 +82,7 @@ const Avatar: React.FC<Props> = ({
               className +
               " rounded-full flex-shrink-0 w-full h-full inline-block  "
             }
-            onError={() => setIsError(() => true)}
+            onError={errorHandlerMemo}
           />
         )}
         {onlineActivity && (

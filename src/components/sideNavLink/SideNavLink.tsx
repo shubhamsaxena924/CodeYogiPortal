@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useState } from "react";
 import { MouseEventHandler } from "react";
 import { IconType } from "react-icons/lib";
@@ -12,6 +12,12 @@ interface Props extends NavLinkProps {
 
 const SideNavLink: React.FC<Props> = ({ Icon, to, handleClick, name }) => {
   const [showToolTip, setShowToolTip] = useState(false);
+
+  //useMemo
+  const mouseEntryHandlerMemo = useMemo(() => {
+    return () => setShowToolTip((value) => !value);
+  }, []);
+
   return (
     <div className="relative">
       <NavLink
@@ -19,8 +25,8 @@ const SideNavLink: React.FC<Props> = ({ Icon, to, handleClick, name }) => {
         to={to}
         className="inline-block p-2 text-white text-opacity-80 hover:text-opacity-100"
         onClick={handleClick}
-        onMouseEnter={() => setShowToolTip(true)}
-        onMouseLeave={() => setShowToolTip(false)}
+        onMouseEnter={mouseEntryHandlerMemo}
+        onMouseLeave={mouseEntryHandlerMemo}
       >
         <Icon className="w-5 h-5"></Icon>
       </NavLink>

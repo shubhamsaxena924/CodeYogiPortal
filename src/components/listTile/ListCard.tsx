@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import React, { Fragment } from "react";
+import React, { Fragment, useMemo } from "react";
 import { useState } from "react";
 import { FiInfo } from "react-icons/fi";
 import Avatar from "../avatar/Avatar";
@@ -27,6 +27,12 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
   }
   const [isError, setIsError] = useState(false);
   const [showDialog, setShowDialog] = useState(false);
+
+  //useMemo
+  const closeDialogMemo = useMemo(() => {
+    return () => setShowDialog(() => false);
+  }, []);
+
   return (
     <div
       className={
@@ -96,7 +102,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
         onClick={() => setShowDialog(true)}
       ></FiInfo>
       <Transition.Root show={showDialog} as={Fragment}>
-        <Dialog open={showDialog} onClose={() => setShowDialog(() => false)}>
+        <Dialog open={showDialog} onClose={closeDialogMemo}>
           <Transition.Child
             as={Fragment}
             enter="transition-opacity duration-500"
@@ -142,7 +148,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
               <Button
                 type="button"
                 buttonText="Close"
-                onClick={() => setShowDialog(false)}
+                onClick={closeDialogMemo}
               />
             </div>
           </Transition.Child>

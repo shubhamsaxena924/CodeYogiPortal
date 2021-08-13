@@ -1,5 +1,6 @@
 import { Transition } from "@headlessui/react";
 import React, { Fragment, InputHTMLAttributes } from "react";
+import { useMemo } from "react";
 import { useState } from "react";
 import { IconType } from "react-icons";
 import { HiExclamationCircle } from "react-icons/hi";
@@ -31,6 +32,23 @@ const InputField: React.FC<Props> = ({
 }) => {
   const [isFocussed, setIsFocussed] = useState<boolean>(false);
   const [showToolTip, setShowToolTip] = useState<boolean>(false);
+
+  //useMemos
+  const focusHandlerMemo = useMemo(() => {
+    return () => setIsFocussed(() => true);
+  }, []);
+  const blurHandlerMemo = useMemo(() => {
+    return (event: any) => {
+      setIsFocussed(() => false);
+      onBlur && onBlur(event);
+    };
+  }, [onBlur]);
+  const mouseEntryHandlerMemo = useMemo(() => {
+    return () => {
+      setShowToolTip((value) => !value);
+    };
+  }, []);
+
   return (
     <>
       <div
@@ -52,11 +70,8 @@ const InputField: React.FC<Props> = ({
             "w-full p-0 pb-3 placeholder-gray-300 bg-transparent border-0 outline-none focus:ring-0 " +
             className
           }
-          onClick={() => setIsFocussed(() => true)}
-          onBlur={(event) => {
-            setIsFocussed(() => false);
-            onBlur && onBlur(event);
-          }}
+          onClick={focusHandlerMemo}
+          onBlur={blurHandlerMemo}
         />
         <Transition
           show={error && touched ? true : false}
@@ -70,12 +85,8 @@ const InputField: React.FC<Props> = ({
         >
           <div
             className="flex items-center mt-1 text-sm transform "
-            onMouseEnter={() => {
-              setShowToolTip(() => true);
-            }}
-            onMouseLeave={() => {
-              setShowToolTip(() => false);
-            }}
+            onMouseEnter={mouseEntryHandlerMemo}
+            onMouseLeave={mouseEntryHandlerMemo}
           >
             <HiExclamationCircle
               className="inline w-5 h-5 m-1 text-auth-primary animate-bounce"
