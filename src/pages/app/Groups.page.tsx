@@ -29,7 +29,7 @@ const GroupsPage: React.FC<Props> = (props) => {
 
   const [isTile, setIsTile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [queryOnSubmit, setQueryOnSubmit] = useState("");
+  const [queryOnSubmit, setQueryOnSubmit] = useState(query);
   useEffect(() => {
     setIsLoading(true);
     fetchGroups({
@@ -38,9 +38,11 @@ const GroupsPage: React.FC<Props> = (props) => {
       query: query,
       offset: 0,
     }).then((groups) => {
-      setIsLoading(false);
       dispatch(groupsFetchAction(query, groups));
     });
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
   }, [query, dispatch]);
 
   // useMemos
@@ -70,7 +72,7 @@ const GroupsPage: React.FC<Props> = (props) => {
           placeholder="Type to search"
           type="text"
           name="Search"
-          value={query}
+          value={queryOnSubmit}
           onChange={(event) => {
             setQueryOnSubmit(event.target.value);
             typeSearch && dispatch(groupsQueryAction(event.target.value));
@@ -112,12 +114,12 @@ const GroupsPage: React.FC<Props> = (props) => {
         </span>
       </form>
       {isLoading ? (
-        <div className="absolute z-50 w-8 h-8 transform translate-x-1/2 rounded-full left-1/2 bg-auth-primary animate-pulse"></div>
+        <div className="absolute z-50 w-8 h-8 transform translate-x-3 rounded-full left-1/2 bg-auth-primary animate-pulse"></div>
       ) : (
         <></>
       )}
       <div className="flex flex-wrap justify-center pt-10 mx-10">
-        {!isLoading && groups.length === 0 && query ? (
+        {!isLoading && groups.length === 0 ? (
           <p className="w-full text-center">No Results Found!</p>
         ) : (
           ""
