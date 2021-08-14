@@ -18,4 +18,8 @@ Level 4: level 3 + Login API Integrated + Group API Listing and Querying (onChan
 
 ## level5
 
-Level 5: level 4 + Problem of level 4 solved with /me api call + App context + useMemo()/useCallback() in most components + fixed input field errors on small screen
+Level 5: level 4 + Problem of level 4 solved with /me api call + AppContext + useMemo()/useCallback() in most components + fixed input field errors on small screen
+
+## level6
+
+Level 6: level 5 + AppContext removed + Redux added (useSelector, useDispatch, organized the code into sub reducers and action files/substates, manually combining reducers vs combineReducers(), keeping AppState and combineReducers in sync using ReturnType<>, bindActionCreators() (optional) + query and results on group search will remain there when you switch pages)

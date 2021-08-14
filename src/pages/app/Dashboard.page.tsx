@@ -1,16 +1,17 @@
 import React from "react";
-import { useContext } from "react";
-import AppContext from "../../App.context";
+import { useAppSelector } from "../../store";
 
 interface Props {}
 
 const DashboardPage: React.FC<Props> = (props) => {
-  const { user } = useContext(AppContext);
+  const user_firstname = useAppSelector(
+    (store) => store.auth.id && store.users.byId[store.auth.id!].first_name
+  );
   return (
     <>
       <div className="p-4 ml-20">
         Dashboard
-        <p>User first_name: {user!.first_name}</p>
+        <p>User first_name: {user_firstname}</p>
       </div>
     </>
   );

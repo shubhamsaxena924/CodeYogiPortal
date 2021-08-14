@@ -1,19 +1,32 @@
 import React, { useEffect, useMemo } from "react";
 import { useState } from "react";
 import { FiList, FiSearch, FiServer } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import {
+  groupsFetchAction,
+  groupsQueryAction,
+} from "../../actions/groups.actions";
 import { fetchGroups } from "../../api/groups.api";
 import Button from "../../components/button/Button";
 import InputField from "../../components/input/InputField";
 import ListCard from "../../components/listTile/ListCard";
 import ToggleSwitch from "../../components/toggleSwitch/ToggleSwitch";
-import { Group } from "../../models/Group";
+import { useAppSelector } from "../../store";
 
 interface Props {}
 
 const GroupsPage: React.FC<Props> = (props) => {
   const [typeSearch, setTypeSearch] = useState(true);
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [query, setQuery] = useState("");
+
+  const groups = useAppSelector((state) => {
+    const groupsIDs = state.groups.queryMap[state.groups.query] || [];
+    const groups = groupsIDs.map((id) => state.groups.byId[id]);
+    return groups;
+  });
+  const query = useAppSelector((state) => state.groups.query);
+
+  const dispatch = useDispatch();
+
   const [isTile, setIsTile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [queryOnSubmit, setQueryOnSubmit] = useState("");
@@ -26,9 +39,9 @@ const GroupsPage: React.FC<Props> = (props) => {
       offset: 0,
     }).then((groups) => {
       setIsLoading(false);
-      setGroups(() => groups);
+      dispatch(groupsFetchAction(query, groups));
     });
-  }, [query]);
+  }, [query, dispatch]);
 
   // useMemos
   const toggleHandlerMemo = useMemo(
@@ -38,9 +51,9 @@ const GroupsPage: React.FC<Props> = (props) => {
   const submitHandlerMemo = useMemo(() => {
     return (event: any) => {
       event.preventDefault();
-      setQuery(() => queryOnSubmit);
+      dispatch(groupsQueryAction(queryOnSubmit));
     };
-  }, [queryOnSubmit]);
+  }, [queryOnSubmit, dispatch]);
   const tileButtonHandlerMemo = useMemo(() => {
     return () => setIsTile((value) => !value);
   }, []);
@@ -57,9 +70,10 @@ const GroupsPage: React.FC<Props> = (props) => {
           placeholder="Type to search"
           type="text"
           name="Search"
+          value={query}
           onChange={(event) => {
             setQueryOnSubmit(event.target.value);
-            typeSearch && setQuery(event.target.value);
+            typeSearch && dispatch(groupsQueryAction(event.target.value));
           }}
           className="w-full"
         ></InputField>
@@ -103,7 +117,7 @@ const GroupsPage: React.FC<Props> = (props) => {
         <></>
       )}
       <div className="flex flex-wrap justify-center pt-10 mx-10">
-        {groups.length === 0 && query ? (
+        {!isLoading && groups.length === 0 && query ? (
           <p className="w-full text-center">No Results Found!</p>
         ) : (
           ""

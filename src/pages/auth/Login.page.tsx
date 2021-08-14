@@ -8,8 +8,8 @@ import ToggleSwitch from "../../components/toggleSwitch/ToggleSwitch";
 import { useFormik } from "formik";
 import { ImSpinner9 } from "react-icons/im";
 import { login } from "../../api/login.api";
-import { useContext } from "react";
-import AppContext from "../../App.context";
+import { useDispatch } from "react-redux";
+import { meLoginAction } from "../../actions/auth.actions";
 
 interface Props {}
 
@@ -17,7 +17,8 @@ const LoginPage: React.FC<Props> = (props) => {
   const history = useHistory();
   const [keepLoggedIn, setKeepLoggedIn] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { setUser } = useContext(AppContext);
+
+  const dispatch = useDispatch();
 
   // Manual Way (Formik does this all on its own)
   // const [loginData, setLoginData] = useState({
@@ -74,7 +75,7 @@ const LoginPage: React.FC<Props> = (props) => {
       console.log("loading...", data);
       login(data).then((userObject) => {
         console.log(userObject);
-        setUser(userObject);
+        dispatch(meLoginAction(userObject));
         history.push("/dashboard");
       });
     },
