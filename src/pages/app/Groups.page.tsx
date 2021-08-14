@@ -29,6 +29,7 @@ const GroupsPage: React.FC<Props> = (props) => {
 
   const [isTile, setIsTile] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [noResult, setNoResult] = useState(false);
   const [queryOnSubmit, setQueryOnSubmit] = useState(query);
   useEffect(() => {
     setIsLoading(true);
@@ -39,10 +40,11 @@ const GroupsPage: React.FC<Props> = (props) => {
       offset: 0,
     }).then((groups) => {
       dispatch(groupsFetchAction(query, groups));
-    });
-    setTimeout(() => {
       setIsLoading(false);
-    }, 2000);
+      if (groups.length === 0) {
+        setNoResult(true);
+      }
+    });
   }, [query, dispatch]);
 
   // useMemos
@@ -119,11 +121,6 @@ const GroupsPage: React.FC<Props> = (props) => {
         <></>
       )}
       <div className="flex flex-wrap justify-center pt-10 mx-10">
-        {!isLoading && groups.length === 0 ? (
-          <p className="w-full text-center">No Results Found!</p>
-        ) : (
-          ""
-        )}
         {groups.map((group, index) => (
           <ListCard
             key={index}
@@ -134,6 +131,11 @@ const GroupsPage: React.FC<Props> = (props) => {
             theme="primary"
           />
         ))}
+        {noResult ? (
+          <p className="w-full text-center">No Results Found!</p>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );
