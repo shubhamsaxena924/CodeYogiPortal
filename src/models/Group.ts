@@ -1,9 +1,9 @@
 import { Issue } from "../api/groups.api";
+import { Entity } from "./Entity";
 import { State } from "./State";
 import { User } from "./User";
 
-export interface Group {
-  id: number;
+export interface Group extends Entity {
   name: string;
   is_private: boolean;
   is_academic: boolean;

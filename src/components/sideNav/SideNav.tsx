@@ -313,6 +313,11 @@ const SideNav: React.FC<Props> = ({ setTitle }) => {
         {/* Sidebar Bottom Actions */}
         <div
           onClick={logout}
+          role="button"
+          onKeyPress={(event) => {
+            event.key === "Enter" && logout();
+          }}
+          tabIndex={0}
           className="flex flex-col items-center my-4 text-xs text-center text-white cursor-pointer text-opacity-80 hover:text-opacity-100"
         >
           <FiLogOut className="w-5 h-5 mb-2 " />

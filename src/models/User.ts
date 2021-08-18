@@ -1,8 +1,8 @@
 import { GroupMemberStatus } from "../api/groups.api";
+import { Entity } from "./Entity";
 
-export interface User {
+export interface User extends Entity {
   __type: string;
-  id: number;
   guid: string;
   first_name: string;
   middle_name: string;

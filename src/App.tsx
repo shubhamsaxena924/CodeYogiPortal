@@ -4,25 +4,26 @@ import AppContainerLazy from "./pages/app/AppContainer.lazy";
 import AuthLazy from "./pages/auth/Auth.lazy";
 import { LOGIN_TOKEN_KEY } from "./api/base.api";
 import { useEffect } from "react";
-import { me } from "./api/user.api";
+// import { me } from "./api/user.api";
 import LoaderPulse from "./components/loader/LoaderPulse";
 import NotFoundPage from "./pages/NotFound.page";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { useAppSelector } from "./store";
-import { meFetchAction } from "./actions/auth.actions";
+// import { meFetchAction } from "./actions/auth.actions";
+import { meSelector } from "./selectors/auth.selectors";
+import { meMidWare } from "./middlewares/auth.middleware";
 
 interface Props {}
 
 const App: React.FC<Props> = (props) => {
-  const user = useAppSelector(
-    (state) => state.auth.id && state.users.byId[state.auth.id]
-  );
-  const dispatch = useDispatch();
+  const user = useAppSelector(meSelector);
+  // const dispatch = useDispatch();
   const token = localStorage.getItem(LOGIN_TOKEN_KEY);
-
+  console.log(user, token);
   useEffect(() => {
     if (!token) return;
-    me().then((user) => dispatch(meFetchAction(user)));
+    // me().then((user) => dispatch(meFetchAction(user)));
+    meMidWare(); //Middleware me()
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   // //This following check is needed otherwise the function will move ahead with user as undefined, because me() is async.
@@ -30,6 +31,7 @@ const App: React.FC<Props> = (props) => {
     return <LoaderPulse />;
   }
 
+  console.log("User is: " + user);
   return (
     <>
       <Suspense fallback={<LoaderPulse />}>

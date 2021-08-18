@@ -1,44 +1,58 @@
-import { Reducer } from "redux";
+import { AnyAction, Reducer } from "redux";
 import { GroupActions } from "../actions/groups.actions";
 import { Group } from "../models/Group";
+import { addMany, EntityState, getEntityIds } from "./entity.reducers";
 
-export interface GroupState {
-  byId: {
-    [id: number]: Group;
-  };
-
+export interface GroupState extends EntityState<Group> {
   query: string;
+  // loadingQuery: boolean;
+  loadingQuery: { [query: string]: boolean };
   queryMap: { [query: string]: number[] };
+  selectedId?: number; //Use this to show the group detail page, even when reloaded.
 }
 
 const initialState = {
   byId: {},
   query: "",
   queryMap: {},
+  loadingQuery: {},
 };
 
-export const groupReducer: Reducer<GroupState> = (
+export const groupReducer: Reducer<GroupState, AnyAction> = (
   state = initialState,
   action
 ) => {
   switch (action.type) {
     case GroupActions.GROUPS_QUERY:
-      return { ...state, query: action.payload };
+      return {
+        ...state,
+        query: action.payload.query,
+        loadingQuery: {
+          ...state.loadingQuery,
+          [action.payload.query]: action.payload.loading,
+        },
+      };
 
     case GroupActions.GROUPS_FETCH:
       const groups = action.payload.groups as Group[];
-      const groupIDs = groups.map((g) => g.id); //return ids of groups fetched for the query searched
-      const groupMap = groups.reduce((prev, group) => {
-        return { ...prev, [group.id]: group };
-      }, {});
+      const groupIDs = getEntityIds(groups); //return ids of groups fetched for the query searched
+      // const groupMap = groups.reduce((prev, group) => {
+      //   return { ...prev, [group.id]: group };
+      // }, {});
+      const newState = addMany(state, groups) as GroupState;
 
       return {
-        ...state,
+        // ...state,
+        ...newState,
         queryMap: {
-          ...state.queryMap,
+          ...newState.queryMap,
           [action.payload.query]: groupIDs,
         },
-        byId: { ...state.byId, ...groupMap },
+        loadingQuery: {
+          ...newState.loadingQuery,
+          [action.payload.query]: false,
+        },
+        // byId: { ...state.byId, ...groupMap }, not needed, because new state is already updated
       }; //update groups for particular search
 
     default:

@@ -23,3 +23,7 @@ Level 5: level 4 + Problem of level 4 solved with /me api call + AppContext + us
 ## level6
 
 Level 6: level 5 + AppContext removed + Redux added (useSelector, useDispatch, organized the code into sub reducers and action files/substates, manually combining reducers vs combineReducers(), keeping AppState and combineReducers in sync using ReturnType<>, bindActionCreators() (optional) + query and results on group search will remain there when you switch pages)
+
+## level7
+
+Level 7: level 6 + custom selectors using manual method vs createSelector() + making Entity & EntityState interfaces for reusability & consistency + custom middleware (which is not actually a middleware) + Group API Optimization (1. First git commit has caching approach. i.e. Don't call API if results for some keyword were fetched in past.)
