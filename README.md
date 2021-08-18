@@ -26,4 +26,4 @@ Level 6: level 5 + AppContext removed + Redux added (useSelector, useDispatch, o
 
 ## level7
 
-Level 7: level 6 + custom selectors using manual method vs createSelector() + making Entity & EntityState interfaces for reusability & consistency + custom middleware (which is not actually a middleware) + Group API Optimization (1. First git commit has caching approach. i.e. Don't call API if results for some keyword were fetched in past.)
+Level 7: level 6 + custom selectors using manual method vs createSelector() + making Entity & EntityState interfaces for reusability & consistency + custom middleware (which is not actually a middleware) + Group API Optimization (1. First git commit has caching approach. i.e. Don't call API if results for some keyword were fetched in past. | 2. Second git commit shows existing results and load fresh results in the background. But it doesn't not call the API if an API call for the keyword is already pending. |)

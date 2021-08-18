@@ -5,10 +5,10 @@ export enum GroupActions {
   GROUPS_FETCH = "groups/fetch",
 }
 
-export const groupsQueryAction = (query: string, loading: boolean) => ({
+export const groupsQueryAction = (query: string) => ({
   type: GroupActions.GROUPS_QUERY,
   // payload: query,
-  payload: { query, loading },
+  payload: query,
 });
 
 export const groupsFetchAction = (query: string, groups: Group[]) => ({
