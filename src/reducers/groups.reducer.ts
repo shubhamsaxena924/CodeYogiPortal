@@ -5,8 +5,8 @@ import { addMany, EntityState, getEntityIds } from "./entity.reducers";
 
 export interface GroupState extends EntityState<Group> {
   query: string;
-  // loadingQuery: boolean;
-  loadingQuery: { [query: string]: boolean };
+  loadingQuery: boolean;
+  // loadingQuery: { [query: string]: boolean };
   queryMap: { [query: string]: number[] };
   selectedId?: number; //Use this to show the group detail page, even when reloaded.
 }
@@ -15,7 +15,7 @@ const initialState = {
   byId: {},
   query: "",
   queryMap: {},
-  loadingQuery: {},
+  loadingQuery: false,
 };
 
 export const groupReducer: Reducer<GroupState, AnyAction> = (
@@ -27,10 +27,7 @@ export const groupReducer: Reducer<GroupState, AnyAction> = (
       return {
         ...state,
         query: action.payload,
-        loadingQuery: {
-          ...state.loadingQuery,
-          [action.payload]: true,
-        },
+        loadingQuery: true,
       };
 
     case GroupActions.GROUPS_FETCH:
@@ -48,10 +45,7 @@ export const groupReducer: Reducer<GroupState, AnyAction> = (
           ...newState.queryMap,
           [action.payload.query]: groupIDs,
         },
-        loadingQuery: {
-          ...newState.loadingQuery,
-          [action.payload.query]: false,
-        },
+        loadingQuery: false,
         // byId: { ...state.byId, ...groupMap }, not needed, because new state is already updated
       }; //update groups for particular search
 

@@ -10,13 +10,13 @@ export const tokenInterceptor = () =>
     if (!token) {
       return config;
     }
-    //Here check whether the request is not for third party api
+    //Here check whether the request is not for third party API
     return { ...config, headers: { ...config.headers, Authorization: token } };
   });
 
 export const tokenValidityInterceptor = () => {
   axios.interceptors.response.use(undefined, (error) => {
-    if (error.response.data.code === 9101) {
+    if (error.response?.data?.code === 9101) {
       logout();
     }
     return Promise.reject(error);

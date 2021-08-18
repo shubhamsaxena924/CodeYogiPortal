@@ -13,7 +13,7 @@ import ListCard from "../../components/listTile/ListCard";
 import ToggleSwitch from "../../components/toggleSwitch/ToggleSwitch";
 import { fetchGroupsMidWare } from "../../middlewares/groups.middleware";
 import {
-  groupLoadingSelector,
+  groupQueryLoadingSelector,
   groupQuerySelector,
   groupsSelector,
 } from "../../selectors/groups.selectors";
@@ -25,7 +25,7 @@ const GroupsPage: React.FC<Props> = (props) => {
   const [typeSearch, setTypeSearch] = useState(true);
   const query = useAppSelector(groupQuerySelector);
   const groups = useAppSelector(groupsSelector);
-  const isLoading = useAppSelector(groupLoadingSelector);
+  const isLoading = useAppSelector(groupQueryLoadingSelector);
 
   // const dispatch = useDispatch();
 

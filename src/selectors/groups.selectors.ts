@@ -72,7 +72,7 @@ export const groupQueryLoadingSelector = createSelector(
   (groupState) => groupState.loadingQuery
 );
 
-export const groupLoadingSelector = createSelector(
-  [groupQuerySelector, groupQueryLoadingSelector],
-  (query, loadingMap) => loadingMap[query]
-);
+// export const groupLoadingSelector = createSelector(
+//   [groupQuerySelector, groupQueryLoadingSelector],
+//   (query, loadingMap) => loadingMap[query]
+// );
