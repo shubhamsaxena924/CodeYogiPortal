@@ -6,7 +6,7 @@ import { NavLink, NavLinkProps } from "react-router-dom";
 
 interface Props extends NavLinkProps {
   Icon: IconType;
-  handleClick: MouseEventHandler<HTMLAnchorElement>;
+  handleClick?: MouseEventHandler<HTMLAnchorElement>;
   name: string;
 }
 

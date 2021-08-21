@@ -2,11 +2,13 @@ import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useMemo } from "react";
 import { useState } from "react";
 import { FiInfo } from "react-icons/fi";
+import { useHistory } from "react-router-dom";
+import { Group } from "../../models/Group";
 import Avatar from "../avatar/Avatar";
 import Button from "../button/Button";
 
 export interface Props {
-  group: { name: string; description: string } | any;
+  group: Group;
   imageSrc?: string;
   imageAlt?: string;
   isTile?: boolean;
@@ -32,12 +34,23 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
   const closeDialogMemo = useMemo(() => {
     return () => setShowDialog(() => false);
   }, []);
+  const nameList = props.group.name.split(" ");
+  //Show first and last character if a single word name, otherwise show first char of first word and first char of last word
+  const nameDp =
+    nameList[0].charAt(0).toUpperCase() +
+    (
+      (nameList.length > 1 && nameList[nameList.length - 1].charAt(0)) ||
+      nameList[0].charAt(nameList[0].length - 1)
+    ).toUpperCase();
+
+  const history = useHistory();
 
   return (
+    // <Link to={`/groups/${props.group.id}`} className="">
     <div
       className={
         (isTile ? "w-full max-w-5xl " : "w-full md:w-auto ") +
-        " items-center m-2.5 bg-white rounded-lg shadow-allSide hover:shadow-2xl transform duration-500 block  sm:flex "
+        " items-center relative m-2.5 bg-white rounded-lg shadow-allSide hover:shadow-2xl transform duration-500 block  sm:flex "
       }
     >
       {isError || !props.imageSrc ? (
@@ -48,8 +61,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
             themeClasses
           }
         >
-          {props.group.name?.charAt(0).toUpperCase() +
-            (props.group.name!.split(" ")[1]?.charAt(0) || "").toUpperCase()}
+          {nameDp}
         </span>
       ) : (
         <img
@@ -93,7 +105,12 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
           {props.group.name}
         </h2>
 
-        <div className="text-xs tracking-wider text-gray-600 break-words whitespace-pre-wrap md:p-4 ">
+        <div
+          className={
+            (isTile ? "mr-10 " : "") +
+            " text-xs tracking-wider text-gray-600 break-words whitespace-pre-wrap "
+          }
+        >
           {props.group.description.slice(0, 30) + ".."}
         </div>
       </div>
@@ -145,16 +162,28 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
               <p className="mb-10 text-sm font-normal text-center text-gray-400">
                 {props.group.join_code}
               </p>
-              <Button
-                type="button"
-                buttonText="Close"
-                onClick={closeDialogMemo}
-              />
+              <div className="flex w-full justify-evenly">
+                <Button
+                  type="button"
+                  buttonText="Close"
+                  theme="secondary"
+                  onClick={closeDialogMemo}
+                />
+                <Button
+                  type="button"
+                  buttonText="More"
+                  theme="primary"
+                  onClick={() => {
+                    history.push("groups/" + props.group.id);
+                  }}
+                />
+              </div>
             </div>
           </Transition.Child>
         </Dialog>
       </Transition.Root>
     </div>
+    // </Link>
   );
 };
 

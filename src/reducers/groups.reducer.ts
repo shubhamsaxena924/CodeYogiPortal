@@ -1,21 +1,26 @@
 import { AnyAction, Reducer } from "redux";
 import { GroupActions } from "../actions/groups.actions";
 import { Group } from "../models/Group";
-import { addMany, EntityState, getEntityIds } from "./entity.reducers";
+import {
+  addMany,
+  addOne,
+  EntityState,
+  getEntityIds,
+  initialEntityState,
+  setFetchOneError,
+  setSelectedId,
+} from "./entity.reducers";
 
 export interface GroupState extends EntityState<Group> {
   query: string;
-  loadingQuery: boolean;
   // loadingQuery: { [query: string]: boolean };
   queryMap: { [query: string]: number[] };
-  selectedId?: number; //Use this to show the group detail page, even when reloaded.
 }
 
 const initialState = {
-  byId: {},
+  ...initialEntityState,
   query: "",
   queryMap: {},
-  loadingQuery: false,
 };
 
 export const groupReducer: Reducer<GroupState, AnyAction> = (
@@ -27,7 +32,7 @@ export const groupReducer: Reducer<GroupState, AnyAction> = (
       return {
         ...state,
         query: action.payload,
-        loadingQuery: true,
+        loadingList: true,
       };
 
     case GroupActions.GROUPS_FETCH:
@@ -45,10 +50,19 @@ export const groupReducer: Reducer<GroupState, AnyAction> = (
           ...newState.queryMap,
           [action.payload.query]: groupIDs,
         },
-        loadingQuery: false,
+        loadingList: false,
         // byId: { ...state.byId, ...groupMap }, not needed, because new state is already updated
       }; //update groups for particular search
 
+    case GroupActions.GROUP_QUERY_SINGLE:
+      return setSelectedId(state, action.payload) as GroupState;
+
+    case GroupActions.GROUP_FETCH_SINGLE:
+      return addOne(state, action.payload, false) as GroupState;
+
+    case GroupActions.GROUP_FETCH_SINGLE_ERROR:
+      const { selectedId, message } = action.payload;
+      return setFetchOneError(state, selectedId, message) as GroupState;
     default:
       return state;
   }

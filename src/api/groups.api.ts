@@ -1,7 +1,8 @@
-import axios, { CancelToken, CancelTokenSource } from "axios";
+import axios, { CancelTokenSource } from "axios";
 
 import {
   BASE_URL,
+  get,
   tokenInterceptor,
   tokenValidityInterceptor,
 } from "./base.api";
@@ -49,9 +50,19 @@ export const fetchGroups = (
   tokenSource?: CancelTokenSource
 ) => {
   const url = BASE_URL + "/groups";
-  return axios
-    .get<GroupsData>(url, { params: data, cancelToken: tokenSource?.token })
-    .then((groupsData) => {
-      return groupsData.data.data;
-    });
+  return get<GroupsData>(url, {
+    params: data,
+    cancelToken: tokenSource?.token,
+  });
+  /*
+  ** Dont call then otherwise it will return a new promise, which will not have the cancel key.
+  .then((groupsData) => {
+    return groupsData.data.data;
+  });
+  */
+};
+
+export const fetchOneGroup = (groupId: number) => {
+  const url = BASE_URL + "/groups/" + groupId;
+  return axios.get<GroupsData>(url);
 };

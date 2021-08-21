@@ -13,7 +13,6 @@ export const authReducer: Reducer<AuthState> = (
   action
 ) => {
   switch (action.type) {
-    case AuthActions.ME_LOGIN:
     case AuthActions.ME_FETCH:
       const userId = action.payload.id as number;
       return { ...state, id: userId };

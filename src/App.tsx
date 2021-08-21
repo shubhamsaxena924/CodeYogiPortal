@@ -4,26 +4,27 @@ import AppContainerLazy from "./pages/app/AppContainer.lazy";
 import AuthLazy from "./pages/auth/Auth.lazy";
 import { LOGIN_TOKEN_KEY } from "./api/base.api";
 import { useEffect } from "react";
-// import { me } from "./api/user.api";
+// import { me } from "./api/me.api";
 import LoaderPulse from "./components/loader/LoaderPulse";
 import NotFoundPage from "./pages/NotFound.page";
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useAppSelector } from "./store";
 // import { meFetchAction } from "./actions/auth.actions";
 import { meSelector } from "./selectors/auth.selectors";
-import { meMidWare } from "./middlewares/auth.middleware";
+// import { meMidWare } from "./middlewares/auth.middleware";
+import { meRequestAction } from "./actions/auth.actions";
 
 interface Props {}
 
 const App: React.FC<Props> = (props) => {
   const user = useAppSelector(meSelector);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const token = localStorage.getItem(LOGIN_TOKEN_KEY);
-  console.log(user, token);
   useEffect(() => {
     if (!token) return;
     // me().then((user) => dispatch(meFetchAction(user)));
-    meMidWare(); //Middleware me()
+    // meMidWare(); //Middleware me()
+    dispatch(meRequestAction());
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   // //This following check is needed otherwise the function will move ahead with user as undefined, because me() is async.
@@ -47,7 +48,16 @@ const App: React.FC<Props> = (props) => {
             <Route path={["/login", "/signup"]} exact>
               {user ? <Redirect to="/dashboard" /> : <AuthLazy />}
             </Route>
-            <Route path={["/dashboard", "/groups", "/recordings"]} exact>
+            <Route
+              path={[
+                "/dashboard",
+                "/groups",
+                "/recordings",
+                "/groups/:groupId",
+                "/users",
+              ]}
+              exact
+            >
               {user ? <AppContainerLazy /> : <Redirect to="/login" />}
             </Route>
             <Route>

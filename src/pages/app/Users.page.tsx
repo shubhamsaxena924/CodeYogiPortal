@@ -4,16 +4,12 @@ import { appTitleChangeAction } from "../../actions/appUi.actions";
 
 interface Props {}
 
-const RecordingsPage: React.FC<Props> = (props) => {
+const UsersPage: React.FC<Props> = (props) => {
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(appTitleChangeAction("Recordings"));
+    dispatch(appTitleChangeAction("Users"));
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
-  return (
-    <>
-      <div className="p-4">Recordings</div>
-    </>
-  );
+  return <></>;
 };
 
-export default React.memo(RecordingsPage);
+export default React.memo(UsersPage);

@@ -1,11 +1,14 @@
 import React, { Fragment } from "react";
+import { appUITitleSelector } from "../../selectors/appUi.selectors";
+import { useAppSelector } from "../../store";
 
 interface Props {
-  title: string;
+  title?: string;
   isScrolling?: boolean;
 }
 
-const TopNav: React.FC<Props> = ({ title, isScrolling }) => {
+const TopNav: React.FC<Props> = ({ isScrolling }) => {
+  const title = useAppSelector(appUITitleSelector);
   return (
     <>
       <div

@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo } from "react";
 import { useState } from "react";
 import { FiList, FiSearch, FiServer } from "react-icons/fi";
-// import { useDispatch } from "react-redux";
+import { groupsQueryAction } from "../../actions/groups.actions";
+import { useDispatch } from "react-redux";
 // import {
 //   groupsFetchAction,
 //   groupsQueryAction,
@@ -11,13 +12,13 @@ import Button from "../../components/button/Button";
 import InputField from "../../components/input/InputField";
 import ListCard from "../../components/listTile/ListCard";
 import ToggleSwitch from "../../components/toggleSwitch/ToggleSwitch";
-import { fetchGroupsMidWare } from "../../middlewares/groups.middleware";
 import {
   groupQueryLoadingSelector,
   groupQuerySelector,
   groupsSelector,
 } from "../../selectors/groups.selectors";
 import { useAppSelector } from "../../store";
+import { appTitleChangeAction } from "../../actions/appUi.actions";
 
 interface Props {}
 
@@ -27,29 +28,18 @@ const GroupsPage: React.FC<Props> = (props) => {
   const groups = useAppSelector(groupsSelector);
   const isLoading = useAppSelector(groupQueryLoadingSelector);
 
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const [isTile, setIsTile] = useState(false);
   // const [isLoading, setIsLoading] = useState(true);
   const [queryOnSubmit, setQueryOnSubmit] = useState(query);
   useEffect(() => {
-    fetchGroupsMidWare({
+    dispatch(groupsQueryAction(query));
+    dispatch(appTitleChangeAction("Groups"));
+    /* fetchGroupsMidWare({
       status: "all-groups",
       query: query,
-    });
-    // setIsLoading(true);
-    // fetchGroups({
-    //   status: "all-groups",
-    //   limit: 100,
-    //   query: query,
-    //   offset: 0,
-    // }).then((groups) => {
-    //   dispatch(groupsFetchAction(query, groups));
-    //   setIsLoading(false);
-    //   if (groups.length === 0) {
-    //     setNoResult(true);
-    //   }
-    // });
+    }); Not needed anymore; saga will take care */
   }, []); //eslint-disable-line react-hooks/exhaustive-deps
 
   // useMemos
@@ -60,20 +50,20 @@ const GroupsPage: React.FC<Props> = (props) => {
   const submitHandlerMemo = useMemo(() => {
     return (event: any) => {
       event.preventDefault();
-      // dispatch(groupsQueryAction(queryOnSubmit, true));
+      dispatch(groupsQueryAction(queryOnSubmit));
 
-      fetchGroupsMidWare({
-        status: "all-groups",
-        query: queryOnSubmit,
-      });
+      // fetchGroupsMidWare({
+      //   status: "all-groups",
+      //   query: queryOnSubmit,
+      // });
     };
-  }, [queryOnSubmit]);
+  }, [queryOnSubmit, dispatch]);
   const tileButtonHandlerMemo = useMemo(() => {
     return () => setIsTile((value) => !value);
   }, []);
 
   return (
-    <div className="text-center pl-14">
+    <div className="text-center">
       <form
         className="block pt-10 mx-10 text-center"
         onSubmit={submitHandlerMemo}
@@ -87,12 +77,12 @@ const GroupsPage: React.FC<Props> = (props) => {
           value={typeSearch ? query : queryOnSubmit}
           onChange={(event) => {
             setQueryOnSubmit(event.target.value);
-            typeSearch &&
-              fetchGroupsMidWare({
-                status: "all-groups",
-                query: event.target.value,
-                limit: 50,
-              });
+            typeSearch && dispatch(groupsQueryAction(event.target.value));
+            // fetchGroupsMidWare({
+            //   status: "all-groups",
+            //   query: event.target.value,
+            //   limit: 50,
+            // });
           }}
           className="w-full"
         ></InputField>

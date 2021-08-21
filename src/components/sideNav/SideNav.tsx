@@ -1,13 +1,11 @@
-import React, { SetStateAction } from "react";
-import { FiHome, FiLogOut, FiPlay, FiUsers } from "react-icons/fi";
+import React from "react";
+import { FiHome, FiLogOut, FiPlay, FiUser, FiUsers } from "react-icons/fi";
 import { logout } from "../../api/login.api";
 import SideNavLink from "../sideNavLink/SideNavLink";
 
-interface Props {
-  setTitle: React.Dispatch<SetStateAction<string>>;
-}
+interface Props {}
 
-const SideNav: React.FC<Props> = ({ setTitle }) => {
+const SideNav: React.FC<Props> = () => {
   return (
     <>
       <div className="fixed top-0 bottom-0 left-0 z-20 flex flex-col items-center justify-between w-16 rounded-tr-lg filter drop-shadow-xl bg-app-primary">
@@ -281,19 +279,16 @@ const SideNav: React.FC<Props> = ({ setTitle }) => {
             <li>
               <SideNavLink
                 Icon={FiHome}
-                handleClick={() => {
-                  setTitle(() => "Dashboard");
-                }}
                 to="/dashboard"
                 name="Dashboard"
               ></SideNavLink>
             </li>
             <li>
+              <SideNavLink Icon={FiUser} to="/users" name="Users" />
+            </li>
+            <li>
               <SideNavLink
                 Icon={FiUsers}
-                handleClick={() => {
-                  setTitle(() => "Groups");
-                }}
                 to="/groups"
                 name="Groups"
               ></SideNavLink>
@@ -301,9 +296,6 @@ const SideNav: React.FC<Props> = ({ setTitle }) => {
             <li>
               <SideNavLink
                 Icon={FiPlay}
-                handleClick={() => {
-                  setTitle(() => "Recordings");
-                }}
                 to="/recordings"
                 name="Recordings"
               ></SideNavLink>

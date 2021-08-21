@@ -51,6 +51,14 @@ const Avatar: React.FC<Props> = ({
     return () => setIsError(() => true);
   }, []);
 
+  const nameList = name!.split(" ");
+  const nameDp =
+    nameList[0].charAt(0).toUpperCase() +
+    (
+      (nameList.length > 1 && nameList[nameList.length - 1].charAt(0)) ||
+      nameList[0].charAt(nameList[0].length - 1)
+    ).toUpperCase();
+
   return (
     <div>
       <div
@@ -70,9 +78,7 @@ const Avatar: React.FC<Props> = ({
               " rounded-full flex flex-shrink-0 w-full h-full justify-center items-center "
             }
           >
-            {name === "n/a"
-              ? "n/a"
-              : name?.charAt(0) + (name!.split(" ")[1]?.charAt(0) || "")}
+            {nameDp}
           </span>
         ) : (
           <img

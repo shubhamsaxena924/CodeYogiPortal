@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
+import { CANCEL } from "redux-saga";
 import { logout } from "./login.api";
 
 export const BASE_URL = "https://api-dev.domecompass.com";
@@ -21,4 +22,13 @@ export const tokenValidityInterceptor = () => {
     }
     return Promise.reject(error);
   });
+};
+
+//Use this get for cancellable API call promises; for non-cancellable use axios.get() directly;
+export const get = <T>(url: string, config?: AxiosRequestConfig) => {
+  const source = axios.CancelToken.source();
+
+  const response = axios.get<T>(url, { ...config, cancelToken: source.token });
+  response[CANCEL] = source.cancel;
+  return response;
 };

@@ -2,7 +2,7 @@ import axios from "axios";
 import { User } from "../models/User";
 import { BASE_URL, LOGIN_TOKEN_KEY } from "./base.api";
 
-interface LoginRequest {
+export interface LoginRequest {
   email: string;
   password: string;
 }

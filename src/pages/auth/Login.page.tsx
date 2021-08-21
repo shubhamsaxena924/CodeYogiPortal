@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Button from "../../components/button/Button";
 import InputField from "../../components/input/InputField";
 import * as yup from "yup";
@@ -7,14 +7,12 @@ import CheckBox from "../../components/checkbox/CheckBox";
 import ToggleSwitch from "../../components/toggleSwitch/ToggleSwitch";
 import { useFormik } from "formik";
 import { ImSpinner9 } from "react-icons/im";
-import { login } from "../../api/login.api";
 import { useDispatch } from "react-redux";
 import { meLoginAction } from "../../actions/auth.actions";
 
 interface Props {}
 
 const LoginPage: React.FC<Props> = (props) => {
-  const history = useHistory();
   const [keepLoggedIn, setKeepLoggedIn] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
@@ -73,11 +71,12 @@ const LoginPage: React.FC<Props> = (props) => {
     }),
     onSubmit: (data) => {
       console.log("loading...", data);
-      login(data).then((userObject) => {
-        console.log(userObject);
-        dispatch(meLoginAction(userObject));
-        history.push("/dashboard");
-      });
+      // login(data).then((userObject) => {
+      //   console.log(userObject);
+      //   dispatch(meLoginAction(userObject));
+      //   history.push("/dashboard");
+      // });
+      dispatch(meLoginAction(data));
     },
   });
 

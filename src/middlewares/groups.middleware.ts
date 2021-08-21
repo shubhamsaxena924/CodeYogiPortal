@@ -23,7 +23,7 @@ export const fetchGroupsMidWare = (request: GroupRequest) => {
 
   return fetchGroups(request, { cancel, token })
     .then((groups) => {
-      store.dispatch(groupsFetchAction(query!, groups));
+      store.dispatch(groupsFetchAction(query!, groups.data.data)); //Updated as we need to use new get function()
       canceler = undefined;
       return groups;
     })
