@@ -3,16 +3,19 @@ import React, { Fragment, useMemo } from "react";
 import { useState } from "react";
 import { FiInfo } from "react-icons/fi";
 import { useHistory } from "react-router-dom";
-import { Group } from "../../models/Group";
 import Avatar from "../avatar/Avatar";
 import Button from "../button/Button";
 
 export interface Props {
-  group: Group;
+  id: number;
+  entityName: string;
+  description: string;
+  data?: string;
   imageSrc?: string;
   imageAlt?: string;
   isTile?: boolean;
   theme?: "primary" | "secondary" | "dark";
+  urlToPushTo: string;
 }
 
 const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
@@ -34,7 +37,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
   const closeDialogMemo = useMemo(() => {
     return () => setShowDialog(() => false);
   }, []);
-  const nameList = props.group.name.split(" ");
+  const nameList = props.entityName!.split(" ");
   //Show first and last character if a single word name, otherwise show first char of first word and first char of last word
   const nameDp =
     nameList[0].charAt(0).toUpperCase() +
@@ -82,7 +85,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
         <Avatar
           imageSrc={props.imageSrc}
           alt={props.imageAlt}
-          name={props.group.name}
+          name={props.entityName}
           className={
             "object-cover text-white border-4 border-white  font-josefin" +
             themeClasses
@@ -102,7 +105,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
             " font-semibold tracking-wide break-words whitespace-pre-wrap  text-gray-700  lg:text-xl"
           }
         >
-          {props.group.name}
+          {props.entityName}
         </h2>
 
         <div
@@ -111,7 +114,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
             " text-xs tracking-wider text-gray-600 break-words whitespace-pre-wrap "
           }
         >
-          {props.group.description.slice(0, 30) + ".."}
+          {props.description.slice(0, 30) + ".."}
         </div>
       </div>
       <FiInfo
@@ -145,23 +148,25 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
             <div className="fixed z-20 flex flex-col items-center self-center p-10 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-md duration top-1/2 left-1/2 w-80 lg:w-96">
               <Avatar
                 imageSrc={props.imageSrc}
-                name={props.group.name}
+                name={props.entityName}
                 size="lg"
                 className="object-cover text-white border-4 border-white bg-auth-primary font-josefin"
                 onlineActivity="online"
               />
               <p className="mt-5 text-sm font-normal text-center text-gray-400 ">
-                {"Id: " + props.group.id}
+                {"Id: " + props.id}
               </p>
               <h3 className="m-2 text-3xl text-center text-gray-500">
-                {props.group.name}
+                {props.entityName}
               </h3>
               <p className="text-sm font-normal text-center text-gray-400 ">
-                {props.group.description}
+                {props.description}
               </p>
-              <p className="mb-10 text-sm font-normal text-center text-gray-400">
-                {props.group.join_code}
-              </p>
+              {props.data && (
+                <p className="mb-10 text-sm font-normal text-center text-gray-400">
+                  {props.data}
+                </p>
+              )}
               <div className="flex w-full justify-evenly">
                 <Button
                   type="button"
@@ -174,7 +179,7 @@ const ListCard: React.FC<Props> = ({ isTile, theme, ...props }) => {
                   buttonText="More"
                   theme="primary"
                   onClick={() => {
-                    history.push("groups/" + props.group.id);
+                    history.push(props.urlToPushTo + props.id);
                   }}
                 />
               </div>

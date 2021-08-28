@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import { authStateSelector } from "./app.selectors";
-import { userbyIdSelector } from "./users.selectors";
+import { userByIdSelector } from "./users.selectors";
 
 //method 1
 // export const meSelector = (state: AppState) =>
@@ -19,7 +19,7 @@ export const authIdSelector = createSelector(
 );
 
 export const meSelector = createSelector(
-  [userbyIdSelector, authIdSelector],
+  [userByIdSelector, authIdSelector],
   (byId, meId) => {
     console.log(byId[meId!]);
     return byId[meId!];

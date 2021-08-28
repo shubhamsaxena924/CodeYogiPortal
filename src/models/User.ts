@@ -1,4 +1,10 @@
 import { GroupMemberStatus } from "../api/groups.api";
+import {
+  Meta,
+  Person,
+  RecentEducation,
+  RecentOccupation,
+} from "../api/users.api";
 import { Entity } from "./Entity";
 
 export interface User extends Entity {
@@ -31,18 +37,20 @@ export interface User extends Entity {
   hometown: string;
   state_code: number;
   home_state_code: number;
-  meta: Request;
+  meta: Meta;
   is_2fa_enabled: boolean;
   default_2fa_type: any;
   created_at: Date;
   updated_at: Date;
   is_zoom_connected: boolean;
-  person: any;
+  person: Person;
   educations: any[];
   occupations: any[];
   blockedUsers: any[];
   memberToAdvocatePages: any[];
   ownerToAdvocatePages: any[];
+  recentOccupation?: RecentOccupation;
+  recentEducation?: RecentEducation;
   academic: any;
   followedAcademics: any[];
 }

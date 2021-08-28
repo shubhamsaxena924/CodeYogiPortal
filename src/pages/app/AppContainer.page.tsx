@@ -10,6 +10,7 @@ import TopNav from "../../components/topNav/TopNav";
 import SideNav from "../../components/sideNav/SideNav";
 import GroupDetailsLazy from "./GroupDetails.lazy";
 import UsersLazy from "./Users.lazy";
+import UserDetailsLazy from "./UserDetails.lazy";
 
 interface Props {}
 
@@ -37,6 +38,9 @@ const AppContainerPage: React.FC<Props> = (props) => {
         </Route>
         <Route path="/users" exact>
           <UsersLazy />
+        </Route>
+        <Route path="/users/:userId">
+          <UserDetailsLazy />
         </Route>
       </div>
     </div>

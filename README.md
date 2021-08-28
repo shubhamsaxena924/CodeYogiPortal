@@ -37,3 +37,7 @@ Level 7: level 6 + custom selectors using manual method vs createSelector() + ma
 ## level8
 
 Level 8: level 7 + Middleware replaced with Redux-Saga + takeLatest() (cancel promise of axios if one is already pending; generator functions made this very easy) + debounce() (wait for the user to stop writing before sending request) + Group details page + added selectedId to state to optimize and added error action and loadingOne to state to handle error in case no group existed.
+
+## level9
+
+Level 9: level 8 + User details page created without search bar

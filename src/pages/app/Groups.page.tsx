@@ -129,11 +129,15 @@ const GroupsPage: React.FC<Props> = (props) => {
         {groups.map((group, index) => (
           <ListCard
             key={group.id}
-            group={group}
+            id={group.id}
+            entityName={group.name}
+            description={group.description}
+            data={group.join_code}
             imageSrc={group.group_image_url}
             imageAlt={group.name}
             isTile={isTile}
             theme="primary"
+            urlToPushTo="groups/"
           />
         ))}
         {!isLoading && groups.length === 0 ? (

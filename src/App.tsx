@@ -55,6 +55,7 @@ const App: React.FC<Props> = (props) => {
                 "/recordings",
                 "/groups/:groupId",
                 "/users",
+                "/users/:userId",
               ]}
               exact
             >
